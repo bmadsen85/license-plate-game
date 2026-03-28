@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>License Plate Game — Next Level</title>
+  <meta name="theme-color" content="#0f172a" />
+  <style>
+    :root{
+      --bg1:#f8fafc;
+      --bg2:#eaf1f8;
+      --panel:rgba(255,255,255,.86);
+      --text:#0f172a;
+      --muted:#64748b;
+      --line:#dbe5f0;
+      --soft:#f5f8fc;
+      --accent:#0f172a;
+      --accent2:#2563eb;
+      --success:#16a34a;
+      --warn:#f59e0b;
+      --danger:#dc2626;
+      --shadow:0 20px 45px rgba(15,23,42,.10);
+      --shadow-sm:0 8px 20px rgba(15,23,42,.08);
+      --radius:28px;
+    }
+    body.dark{
+      --bg1:#020617;
+      --bg2:#0f172a;
+      --panel:rgba(15,23,42,.82);
+      --text:#e2e8f0;
+      --muted:#94a3b8;
+      --line:#243244;
+      --soft:#0b1220;
+      --accent:#e2e8f0;
+      --accent2:#60a5fa;
+      --success:#22c55e;
+      --warn:#fbbf24;
+      --danger:#f87171;
+      --shadow:0 24px 60px rgba(0,0,0,.35);
+      --shadow-sm:0 10px 24px rgba(0,0,0,.28);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top, rgba(37,99,235,.10), transparent 28%),
+        linear-gradient(180deg,var(--bg1),var(--bg2));
+      min-height:100vh;
+      transition:background .25s ease,color .25s ease;
+    }
+    button,input{font:inherit}
+    .wrap{max-width:1360px;margin:0 auto;padding:22px}
+    .grid{display:grid;gap:18px}
+    .hero{grid-template-columns:1.2fr .8fr}
+    .stats{grid-template-columns:repeat(4,1fr)}
+    .mid{grid-template-columns:1.16fr .84fr}
+    .bottom{grid-template-columns:1.42fr .58fr}
+    .panel{
+      background:var(--panel);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      border:1px solid var(--line);
+      border-radius:32px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .inner{padding:24px}
+    .head{
+      display:flex;justify-content:space-between;align-items:flex-start;gap:14px;
+      padding:24px;border-bottom:1px solid var(--line);
+    }
+    .eyebrow,.pill,.btn,.chip,.seg button,.tiny{
+      border-radius:999px;
+    }
+    .eyebrow{
+      display:inline-flex;gap:8px;align-items:center;
+      padding:8px 12px;
+      border:1px solid var(--line);
+      color:var(--muted);
+      background:rgba(255,255,255,.55);
+      font-size:14px;
+      margin-bottom:14px;
+    }
+    body.dark .eyebrow{background:rgba(2,6,23,.45)}
+    .title{
+      margin:0;
+      font-size:54px;
+      line-height:1.02;
+      letter-spacing:-.045em;
+    }
+    .sub{
+      color:var(--muted);
+      font-size:18px;
+      margin-top:14px;
+      max-width:760px;
+    }
+    .heroRow{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+    .heroIcon{
+      width:60px;height:60px;border-radius:22px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg,rgba(37,99,235,.14),rgba(37,99,235,.04));
+      border:1px solid var(--line);
+      box-shadow:var(--shadow-sm);
+      font-size:28px;
+      flex:0 0 auto;
+    }
+    .pillRow{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+    .pill{
+      padding:9px 13px;
+      background:var(--soft);
+      border:1px solid var(--line);
+      font-size:13px;
+      font-weight:700;
+    }
+    .pill.active{background:var(--accent);color:var(--bg1);border-color:transparent}
+    .missionWrap{display:grid;gap:16px}
+    .missionHeader{display:flex;gap:12px;align-items:center}
+    .missionIcon{
+      width:52px;height:52px;border-radius:18px;
+      display:grid;place-items:center;
+      background:rgba(245,158,11,.18);
+      border:1px solid rgba(245,158,11,.35);
+      font-size:24px;
+      flex:0 0 auto;
+    }
+    .label{font-size:13px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+    .missionTitle{font-size:25px;font-weight:850;letter-spacing:-.04em}
+    .muted{color:var(--muted)}
+    .actionNote{
+      padding:14px 16px;
+      border:1px solid var(--line);
+      background:var(--soft);
+      border-radius:20px;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .btn{
+      padding:11px 16px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.7);
+      color:var(--text);
+      cursor:pointer;
+      font-weight:700;
+      transition:transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
+      display:inline-flex;align-items:center;gap:8px;
+      text-decoration:none;
+    }
+    body.dark .btn{background:rgba(15,23,42,.55)}
+    .btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+    .btn.primary{background:var(--accent);color:var(--bg1);border-color:transparent}
+    .btn.ghost{background:transparent}
+    .btn.danger{background:rgba(220,38,38,.10);color:var(--danger);border-color:rgba(220,38,38,.25)}
+    .btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+    .top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+    .stat{padding:20px}
+    .statLabel{font-size:14px;color:var(--muted)}
+    .statValue{font-size:34px;font-weight:850;letter-spacing:-.04em;margin-top:4px}
+    .statIcon{
+      width:44px;height:44px;border-radius:16px;background:var(--soft);border:1px solid var(--line);
+      display:grid;place-items:center;font-size:19px;
+    }
+    .mapCard{
+      position:relative;
+      border:1px solid var(--line);
+      border-radius:30px;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(96,165,250,.18), transparent 14%),
+        radial-gradient(circle at 82% 18%, rgba(59,130,246,.15), transparent 14%),
+        radial-gradient(circle at 50% 84%, rgba(37,99,235,.14), transparent 17%),
+        linear-gradient(135deg, rgba(255,255,255,.72), rgba(248,250,252,.58));
+      min-height:560px;
+    }
+    body.dark .mapCard{
+      background:
+        radial-gradient(circle at 15% 20%, rgba(96,165,250,.12), transparent 14%),
+        radial-gradient(circle at 82% 18%, rgba(59,130,246,.10), transparent 14%),
+        radial-gradient(circle at 50% 84%, rgba(37,99,235,.08), transparent 17%),
+        linear-gradient(135deg, rgba(2,6,23,.55), rgba(15,23,42,.42));
+    }
+    .mapTopBar{
+      display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+      padding:18px 18px 0 18px;
+    }
+    .progressLine{display:flex;justify-content:space-between;align-items:center;font-size:14px;margin-bottom:10px}
+    .bar{height:12px;background:rgba(148,163,184,.2);border-radius:999px;overflow:hidden;border:1px solid var(--line)}
+    .bar > span{
+      display:block;height:100%;
+      background:linear-gradient(90deg,var(--accent2),#38bdf8);
+      width:0%;
+      transition:width .3s ease;
+    }
+    .mapWrap{
+      padding:10px 16px 18px 16px;
+      overflow:auto;
+    }
+    .svgMap{
+      width:100%;
+      min-width:900px;
+      height:auto;
+      display:block;
+      filter:drop-shadow(0 14px 26px rgba(15,23,42,.10));
+    }
+    .state{
+      cursor:pointer;
+      transition:transform .12s ease, filter .12s ease, fill .12s ease, stroke .12s ease;
+      transform-origin:center;
+    }
+    .state:hover{transform:translateY(-1px) scale(1.02);filter:brightness(1.03)}
+    .state .shape{
+      fill:#ffffff;
+      stroke:#b9c7d8;
+      stroke-width:1.6;
+    }
+    body.dark .state .shape{fill:#102036;stroke:#3b4e66}
+    .state.found .shape{fill:#bfdbfe;stroke:#2563eb}
+    body.dark .state.found .shape{fill:#1d4ed8;stroke:#93c5fd}
+    .state.mission .shape{
+      stroke:var(--warn);
+      stroke-width:3;
+      filter:drop-shadow(0 0 10px rgba(245,158,11,.35));
+    }
+    .stateLabel{
+      fill:#0f172a;
+      font-size:9px;
+      font-weight:800;
+      pointer-events:none;
+      text-anchor:middle;
+      dominant-baseline:middle;
+    }
+    body.dark .stateLabel{fill:#e2e8f0}
+    .tiny{
+      padding:7px 11px;font-size:12px;font-weight:700;
+      border:1px solid var(--line);background:var(--soft);
+    }
+    .achievement,.recent,.rule,.control,.playerCard,.tripCard,.plate{
+      border:1px solid var(--line);border-radius:22px;background:rgba(255,255,255,.55)
+    }
+    body.dark .achievement,body.dark .recent,body.dark .rule,body.dark .control,body.dark .playerCard,body.dark .tripCard,body.dark .plate{
+      background:rgba(2,6,23,.26)
+    }
+    .achievement{padding:14px 16px;display:flex;gap:12px;align-items:center;opacity:.54}
+    .achievement.unlocked{opacity:1;background:var(--soft)}
+    .achievement .icon,.recent .code{
+      width:38px;height:38px;border-radius:14px;display:grid;place-items:center;background:var(--soft);border:1px solid var(--line)
+    }
+    .regionBlock{display:grid;gap:8px}
+    .searchWrap{position:relative;min-width:min(100%,320px)}
+    .search{
+      width:100%;padding:12px 16px 12px 42px;border:1px solid var(--line);
+      border-radius:18px;background:rgba(255,255,255,.7);outline:none;color:var(--text)
+    }
+    body.dark .search{background:rgba(2,6,23,.35)}
+    .searchIcon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted)}
+    .seg{
+      display:inline-flex;gap:4px;padding:4px;border-radius:20px;border:1px solid var(--line);background:var(--soft)
+    }
+    .seg button{
+      border:none;background:transparent;padding:10px 14px;color:var(--muted);font-weight:800;cursor:pointer
+    }
+    .seg button.active{background:rgba(255,255,255,.82);color:var(--text);box-shadow:var(--shadow-sm)}
+    body.dark .seg button.active{background:rgba(15,23,42,.72)}
+    .plateGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .plate{
+      padding:16px;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;
+      transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease
+    }
+    .plate:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+    .plate.found{background:rgba(37,99,235,.08);border-color:#93c5fd}
+    .plate.mission:not(.found){box-shadow:0 0 0 3px rgba(245,158,11,.18)}
+    .chip{
+      display:inline-flex;padding:6px 10px;border:1px solid var(--line);background:var(--soft);font-size:12px;font-weight:800
+    }
+    .recent{padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+    .recent .code{width:auto;height:auto;padding:8px 12px;border-radius:999px;font-weight:800}
+    .rule,.control,.tripCard,.playerCard{padding:14px 16px}
+    .control{cursor:pointer;background:transparent}
+    .empty{
+      border:1px dashed var(--line);border-radius:22px;padding:28px;text-align:center;background:rgba(255,255,255,.35)
+    }
+    body.dark .empty{background:rgba(2,6,23,.14)}
+    .row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .toolbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:18px}
+    .rightStack,.stack{display:grid;gap:16px}
+    .checkrow{
+      display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--line);
+      border-radius:18px;background:rgba(255,255,255,.45)
+    }
+    body.dark .checkrow{background:rgba(2,6,23,.22)}
+    .players{display:grid;gap:10px}
+    .playerCard.active{border-color:#93c5fd;box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+    .tripList{display:grid;gap:10px}
+    .themeToggle{
+      width:44px;height:44px;border-radius:16px;border:1px solid var(--line);background:var(--soft);cursor:pointer
+    }
+    .footerMini{display:flex;gap:8px;flex-wrap:wrap}
+    @media (max-width:1150px){
+      .hero,.stats,.mid,.bottom{grid-template-columns:1fr}
+      .plateGrid{grid-template-columns:repeat(2,1fr)}
+      .title{font-size:44px}
+      .svgMap{min-width:820px}
+    }
+    @media (max-width:720px){
+      .wrap{padding:14px}
+      .head,.heroRow{flex-direction:column}
+      .plateGrid{grid-template-columns:1fr}
+      .title{font-size:36px}
+      .sub{font-size:16px}
+      .mapCard{min-height:480px}
+      .svgMap{min-width:740px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="grid hero">
+      <section class="panel">
+        <div class="inner">
+          <div class="heroRow">
+            <div>
+              <div class="eyebrow">🚗 Next-level single-file edition</div>
+              <h1 class="title">License Plate Game</h1>
+              <div class="sub">A polished single-file road trip game with a real clickable SVG-style map, player profiles, trip presets, dark mode, sound effects, offline-friendly browser save, and export/import progress.</div>
+              <div class="pillRow">
+                <div class="pill active" id="scorePill">Score: 0</div>
+                <div class="pill" id="comboPill">Combo: 0x</div>
+                <div class="pill" id="bestComboPill">Best Combo: 0x</div>
+                <div class="pill" id="streakPill">States Found: 0</div>
+              </div>
+            </div>
+            <div class="heroIcon">🛣️</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="inner missionWrap">
+          <div class="missionHeader">
+            <div class="missionIcon">🎯</div>
+            <div>
+              <div class="label">Current mission</div>
+              <div class="missionTitle" id="missionName">Loading...</div>
+            </div>
+          </div>
+          <div class="muted" id="missionText">Spot a mission plate next for a bonus.</div>
+          <div class="footerMini">
+            <button class="btn primary" id="newMissionBtn">✨ New mission</button>
+            <button class="btn" id="soundBtn">🔊 Sound on</button>
+            <button class="themeToggle" id="themeBtn" title="Toggle theme">🌙</button>
+          </div>
+          <div id="recentAction" class="actionNote" style="display:none"></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="grid stats" style="margin-top:18px">
+      <section class="panel stat"><div class="top"><div><div class="statLabel">Progress</div><div class="statValue" id="progressValue">0%</div><div class="muted" id="progressSub">0 of 50 found</div></div><div class="statIcon">🏆</div></div></section>
+      <section class="panel stat"><div class="top"><div><div class="statLabel">Plates Found</div><div class="statValue" id="foundValue">0</div><div class="muted">Spotted so far</div></div><div class="statIcon">✅</div></div></section>
+      <section class="panel stat"><div class="top"><div><div class="statLabel">Remaining</div><div class="statValue" id="remainingValue">0</div><div class="muted">Still to find</div></div><div class="statIcon">🗺️</div></div></section>
+      <section class="panel stat"><div class="top"><div><div class="statLabel">Achievements</div><div class="statValue" id="achievementValue">0</div><div class="muted" id="achievementSub">0 total badges</div></div><div class="statIcon">⭐</div></div></section>
+    </div>
+
+    <div class="grid mid" style="margin-top:18px">
+      <section class="panel">
+        <div class="head">
+          <div>
+            <div style="font-size:28px;font-weight:850;letter-spacing:-.04em">Clickable state map</div>
+            <div class="muted" style="margin-top:4px">Tap a state shape to mark it found. Mission targets glow gold.</div>
+          </div>
+          <label class="checkrow">
+            <input type="checkbox" id="bonusToggle" checked />
+            <span style="font-size:14px;font-weight:800">Include Washington, DC</span>
+          </label>
+        </div>
+        <div class="mapCard">
+          <div class="mapTopBar">
+            <div class="tiny" id="mapHint">Click any state to track progress</div>
+            <div style="min-width:min(100%,280px);width:320px">
+              <div class="progressLine">
+                <span class="muted" style="font-weight:800">Trip completion</span>
+                <span id="tripPct" style="font-weight:850">0%</span>
+              </div>
+              <div class="bar"><span id="tripBar"></span></div>
+            </div>
+          </div>
+          <div class="mapWrap">
+            <svg id="svgMap" class="svgMap" viewBox="0 0 1000 620" xmlns="http://www.w3.org/2000/svg" aria-label="United States plate game map"></svg>
+          </div>
+        </div>
+      </section>
+
+      <div class="rightStack">
+        <section class="panel">
+          <div class="head"><div style="font-size:28px;font-weight:850;letter-spacing:-.04em">Achievements</div></div>
+          <div class="inner stack" id="achievements"></div>
+        </section>
+
+        <section class="panel">
+          <div class="head"><div style="font-size:28px;font-weight:850;letter-spacing:-.04em">Region progress</div></div>
+          <div class="inner stack" id="regions"></div>
+        </section>
+
+        <section class="panel">
+          <div class="head"><div style="font-size:28px;font-weight:850;letter-spacing:-.04em">Players</div></div>
+          <div class="inner stack">
+            <div class="row">
+              <input id="playerInput" class="search" type="text" placeholder="Add player name..." />
+              <button class="btn primary" id="addPlayerBtn">Add</button>
+            </div>
+            <div class="players" id="players"></div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="grid bottom" style="margin-top:18px">
+      <section class="panel">
+        <div class="head">
+          <div>
+            <div style="font-size:28px;font-weight:850;letter-spacing:-.04em">Tracker</div>
+            <div class="muted" style="margin-top:4px">Search by state, region, or abbreviation. Swap between grid and grouped view.</div>
+          </div>
+          <div class="searchWrap">
+            <span class="searchIcon">🔎</span>
+            <input id="searchInput" class="search" type="text" placeholder="Search states..." />
+          </div>
+        </div>
+        <div class="inner">
+          <div class="toolbar">
+            <div class="seg">
+              <button id="tabGrid" class="active">Grid</button>
+              <button id="tabRegions">By region</button>
+            </div>
+            <div class="footerMini">
+              <button class="btn" id="markAllBtn">Mark all</button>
+              <button class="btn" id="exportBtn">Export</button>
+              <button class="btn" id="importBtn">Import</button>
+              <button class="btn danger" id="newGameBtn">New game</button>
+            </div>
+          </div>
+          <div id="trackerContent"></div>
+        </div>
+      </section>
+
+      <div class="rightStack">
+        <section class="panel">
+          <div class="head"><div style="font-size:28px;font-weight:850;letter-spacing:-.04em">Trip presets</div></div>
+          <div class="inner tripList">
+            <button class="tripCard btn" data-trip="Summer Road Trip 2026">☀️ Summer Road Trip 2026</button>
+            <button class="tripCard btn" data-trip="Weekend Highway Run">🛻 Weekend Highway Run</button>
+            <button class="tripCard btn" data-trip="National Parks Loop">🏕️ National Parks Loop</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="head"><div style="font-size:28px;font-weight:850;letter-spacing:-.04em">Recent finds</div></div>
+          <div class="inner stack" id="recentFinds"></div>
+        </section>
+
+        <section class="panel">
+          <div class="head"><div style="font-size:28px;font-weight:850;letter-spacing:-.04em">Scoring + tools</div></div>
+          <div class="inner stack">
+            <div class="rule">Every new state is worth 100 points.</div>
+            <div class="rule">Each combo level adds +15 points.</div>
+            <div class="rule">Mission states add a +125 point bonus.</div>
+            <div class="rule">Export creates a shareable save string for another browser.</div>
+            <button class="control btn ghost" id="clearSearchBtn">🧹 Clear search</button>
+            <button class="control btn ghost" id="resetPlayerBtn">👤 Reset active player</button>
+            <button class="control btn ghost" id="shuffleMissionBtn">🎯 Shuffle mission</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "license-plate-game-next-level-v1";
+    const REGION_ORDER = ["West","Midwest","South","Northeast","Bonus"];
+    const ACHIEVEMENTS = [
+      { id:"first", label:"First Spot", icon:"✨", test:s=>s.foundCount>=1 },
+      { id:"ten", label:"10 Plates", icon:"🥉", test:s=>s.foundCount>=10 },
+      { id:"twentyfive", label:"25 Plates", icon:"🏆", test:s=>s.foundCount>=25 },
+      { id:"halfway", label:"Halfway There", icon:"🛣️", test:s=>s.progress>=50 },
+      { id:"west", label:"West Complete", icon:"👑", test:s=>s.completedRegions.includes("West") },
+      { id:"all", label:"Road Trip Legend", icon:"🚩", test:s=>s.progress===100 },
+      { id:"combo5", label:"5x Combo", icon:"⚡", test:s=>s.combo>=5 },
+      { id:"northeast", label:"Northeast Complete", icon:"🌆", test:s=>s.completedRegions.includes("Northeast") }
+    ];
+
+    const STATES = [
+      { code:"WA", name:"Washington", region:"West", x:95, y:70, w:92, h:52 },
+      { code:"OR", name:"Oregon", region:"West", x:102, y:126, w:88, h:50 },
+      { code:"CA", name:"California", region:"West", x:96, y:182, w:82, h:116 },
+      { code:"AK", name:"Alaska", region:"West", x:86, y:488, w:118, h:58 },
+      { code:"HI", name:"Hawaii", region:"West", x:250, y:532, w:66, h:34 },
+      { code:"ID", name:"Idaho", region:"West", x:190, y:95, w:58, h:92 },
+      { code:"NV", name:"Nevada", region:"West", x:182, y:185, w:64, h:86 },
+      { code:"AZ", name:"Arizona", region:"West", x:195, y:281, w:74, h:70 },
+      { code:"UT", name:"Utah", region:"West", x:250, y:195, w:58, h:82 },
+      { code:"MT", name:"Montana", region:"West", x:248, y:78, w:104, h:58 },
+      { code:"WY", name:"Wyoming", region:"West", x:302, y:152, w:92, h:54 },
+      { code:"CO", name:"Colorado", region:"West", x:354, y:214, w:96, h:58 },
+      { code:"NM", name:"New Mexico", region:"West", x:324, y:284, w:98, h:72 },
+
+      { code:"ND", name:"North Dakota", region:"Midwest", x:392, y:80, w:94, h:54 },
+      { code:"SD", name:"South Dakota", region:"Midwest", x:390, y:142, w:96, h:54 },
+      { code:"NE", name:"Nebraska", region:"Midwest", x:390, y:204, w:96, h:52 },
+      { code:"KS", name:"Kansas", region:"Midwest", x:398, y:264, w:94, h:52 },
+      { code:"MN", name:"Minnesota", region:"Midwest", x:492, y:84, w:78, h:74 },
+      { code:"IA", name:"Iowa", region:"Midwest", x:500, y:170, w:76, h:54 },
+      { code:"MO", name:"Missouri", region:"Midwest", x:506, y:234, w:82, h:72 },
+      { code:"WI", name:"Wisconsin", region:"Midwest", x:580, y:98, w:66, h:72 },
+      { code:"IL", name:"Illinois", region:"Midwest", x:594, y:182, w:56, h:94 },
+      { code:"IN", name:"Indiana", region:"Midwest", x:654, y:186, w:48, h:82 },
+      { code:"MI", name:"Michigan", region:"Midwest", x:654, y:88, w:74, h:86 },
+      { code:"OH", name:"Ohio", region:"Midwest", x:706, y:188, w:56, h:78 },
+
+      { code:"OK", name:"Oklahoma", region:"South", x:498, y:316, w:96, h:52 },
+      { code:"TX", name:"Texas", region:"South", x:474, y:376, w:138, h:116 },
+      { code:"AR", name:"Arkansas", region:"South", x:598, y:294, w:66, h:76 },
+      { code:"LA", name:"Louisiana", region:"South", x:598, y:382, w:68, h:92 },
+      { code:"MS", name:"Mississippi", region:"South", x:672, y:358, w:48, h:92 },
+      { code:"AL", name:"Alabama", region:"South", x:724, y:356, w:48, h:92 },
+      { code:"GA", name:"Georgia", region:"South", x:776, y:348, w:66, h:92 },
+      { code:"FL", name:"Florida", region:"South", x:840, y:434, w:98, h:64 },
+      { code:"TN", name:"Tennessee", region:"South", x:678, y:292, w:108, h:44 },
+      { code:"KY", name:"Kentucky", region:"South", x:666, y:246, w:102, h:40 },
+      { code:"WV", name:"West Virginia", region:"South", x:778, y:232, w:56, h:50 },
+      { code:"VA", name:"Virginia", region:"South", x:834, y:246, w:82, h:42 },
+      { code:"NC", name:"North Carolina", region:"South", x:842, y:296, w:92, h:46 },
+      { code:"SC", name:"South Carolina", region:"South", x:846, y:348, w:62, h:54 },
+      { code:"MD", name:"Maryland", region:"South", x:868, y:214, w:46, h:26 },
+      { code:"DE", name:"Delaware", region:"South", x:920, y:210, w:20, h:34 },
+      { code:"DC", name:"Washington, DC", region:"Bonus", x:910, y:246, w:20, h:20 },
+
+      { code:"PA", name:"Pennsylvania", region:"Northeast", x:780, y:180, w:102, h:42 },
+      { code:"NY", name:"New York", region:"Northeast", x:792, y:124, w:102, h:44 },
+      { code:"NJ", name:"New Jersey", region:"Northeast", x:892, y:166, w:28, h:52 },
+      { code:"CT", name:"Connecticut", region:"Northeast", x:904, y:118, w:28, h:26 },
+      { code:"RI", name:"Rhode Island", region:"Northeast", x:936, y:118, w:18, h:24 },
+      { code:"MA", name:"Massachusetts", region:"Northeast", x:904, y:88, w:52, h:24 },
+      { code:"VT", name:"Vermont", region:"Northeast", x:874, y:84, w:26, h:44 },
+      { code:"NH", name:"New Hampshire", region:"Northeast", x:904, y:54, w:26, h:48 },
+      { code:"ME", name:"Maine", region:"Northeast", x:936, y:34, w:46, h:76 }
+    ];
+
+    const defaultProfile = (name="Player 1") => ({
+      name,
+      found: [],
+      score: 0,
+      combo: 0,
+      bestCombo: 0,
+      missionCode: null,
+      recentAction: ""
+    });
+
+    const state = {
+      query: "",
+      includeBonus: true,
+      tab: "grid",
+      soundOn: true,
+      darkMode: false,
+      tripName: "Open Road",
+      players: [defaultProfile("Player 1")],
+      activePlayerIndex: 0
+    };
+
+    const $ = (id) => document.getElementById(id);
+    const activePlayer = () => state.players[state.activePlayerIndex];
+
+    function save() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function load() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === "object") {
+          Object.assign(state, parsed);
+          if (!Array.isArray(state.players) || !state.players.length) state.players = [defaultProfile()];
+          if (typeof state.activePlayerIndex !== "number" || !state.players[state.activePlayerIndex]) state.activePlayerIndex = 0;
+        }
+      } catch {}
+    }
+
+    function playTone(type="good") {
+      if (!state.soundOn) return;
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = "sine";
+        osc.frequency.value = type === "good" ? 660 : type === "mission" ? 880 : 320;
+        gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.08, ctx.currentTime + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.20);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.22);
+      } catch {}
+    }
+
+    function activeStates() {
+      return STATES.filter(s => state.includeBonus || s.code !== "DC");
+    }
+
+    function statsFor(profile=activePlayer()) {
+      const total = activeStates().length;
+      const foundCount = activeStates().filter(s => profile.found.includes(s.code)).length;
+      const remaining = total - foundCount;
+      const progress = total ? Math.round((foundCount / total) * 100) : 0;
+      const completedRegions = regionStats(profile).filter(r => r.completed).map(r => r.region);
+      return { total, foundCount, remaining, progress, completedRegions, combo: profile.combo };
+    }
+
+    function regionStats(profile=activePlayer()) {
+      return REGION_ORDER.map(region => {
+        const items = activeStates().filter(s => s.region === region);
+        const found = items.filter(s => profile.found.includes(s.code)).length;
+        return {
+          region,
+          total: items.length,
+          found,
+          completed: items.length > 0 && found === items.length
+        };
+      }).filter(r => r.total > 0);
+    }
+
+    function ensureMission(profile=activePlayer()) {
+      const remaining = activeStates().filter(s => !profile.found.includes(s.code));
+      if (!profile.missionCode || profile.found.includes(profile.missionCode) || !activeStates().some(s => s.code === profile.missionCode)) {
+        profile.missionCode = remaining.length ? remaining[Math.floor(Math.random()*remaining.length)].code : null;
+      }
+    }
+
+    function filteredStates() {
+      const q = state.query.trim().toLowerCase();
+      return activeStates().filter(s =>
+        !q ||
+        s.name.toLowerCase().includes(q) ||
+        s.code.toLowerCase().includes(q) ||
+        s.region.toLowerCase().includes(q)
+      );
+    }
+
+    function groupedStates() {
+      const list = filteredStates();
+      return REGION_ORDER.map(region => ({
+        region,
+        items: list.filter(s => s.region === region)
+      })).filter(g => g.items.length);
+    }
+
+    function missionState(profile=activePlayer()) {
+      return activeStates().find(s => s.code === profile.missionCode) || null;
+    }
+
+    function stateRectPath(s) {
+      const r = 12;
+      const x=s.x,y=s.y,w=s.w,h=s.h;
+      return `M${x+r},${y} H${x+w-r} Q${x+w},${y} ${x+w},${y+r} V${y+h-r} Q${x+w},${y+h} ${x+w-r},${y+h} H${x+r} Q${x},${y+h} ${x},${y+h-r} V${y+r} Q${x},${y} ${x+r},${y} Z`;
+    }
+
+    function toggleState(code) {
+      const profile = activePlayer();
+      const target = activeStates().find(s => s.code === code);
+      if (!target) return;
+
+      if (profile.found.includes(code)) {
+        profile.found = profile.found.filter(c => c !== code);
+        profile.combo = 0;
+        profile.recentAction = `Removed ${target.name}. Combo reset.`;
+        playTone("bad");
+        ensureMission(profile);
+        save();
+        render();
+        return;
+      }
+
+      const missionHit = profile.missionCode === code;
+      const comboNext = profile.combo + 1;
+      const points = 100 + comboNext * 15 + (missionHit ? 125 : 0);
+      profile.found.push(code);
+      profile.score += points;
+      profile.combo = comboNext;
+      profile.bestCombo = Math.max(profile.bestCombo, comboNext);
+      profile.recentAction = missionHit
+        ? `Mission complete: ${target.name}! +${points} points.`
+        : `${target.name} spotted. +${points} points.`;
+      playTone(missionHit ? "mission" : "good");
+
+      if (missionHit) {
+        const remaining = activeStates().filter(s => !profile.found.includes(s.code));
+        profile.missionCode = remaining.length ? remaining[Math.floor(Math.random()*remaining.length)].code : null;
+      }
+      save();
+      render();
+    }
+
+    function newMission() {
+      const profile = activePlayer();
+      const remaining = activeStates().filter(s => !profile.found.includes(s.code));
+      if (!remaining.length) return;
+      const pick = remaining[Math.floor(Math.random()*remaining.length)];
+      profile.missionCode = pick.code;
+      profile.recentAction = `New mission: find ${pick.name}.`;
+      save();
+      render();
+    }
+
+    function markAll() {
+      const profile = activePlayer();
+      profile.found = activeStates().map(s => s.code);
+      profile.score = Math.max(profile.score, 9999);
+      profile.combo = 0;
+      profile.bestCombo = Math.max(profile.bestCombo, activeStates().length);
+      profile.missionCode = null;
+      profile.recentAction = "Everything marked complete. Legendary status unlocked.";
+      save();
+      render();
+    }
+
+    function newGame() {
+      state.players[state.activePlayerIndex] = defaultProfile(activePlayer().name);
+      ensureMission(activePlayer());
+      save();
+      render();
+    }
+
+    function exportSave() {
+      const raw = btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+      prompt("Copy your save string:", raw);
+    }
+
+    function importSave() {
+      const raw = prompt("Paste a save string:");
+      if (!raw) return;
+      try {
+        const parsed = JSON.parse(decodeURIComponent(escape(atob(raw))));
+        if (parsed && typeof parsed === "object") {
+          Object.assign(state, parsed);
+          if (!Array.isArray(state.players) || !state.players.length) state.players = [defaultProfile()];
+          if (!state.players[state.activePlayerIndex]) state.activePlayerIndex = 0;
+          save();
+          render();
+        }
+      } catch {
+        alert("That save string is not valid.");
+      }
+    }
+
+    function addPlayer() {
+      const input = $("playerInput");
+      const name = input.value.trim();
+      if (!name) return;
+      state.players.push(defaultProfile(name));
+      state.activePlayerIndex = state.players.length - 1;
+      input.value = "";
+      ensureMission(activePlayer());
+      save();
+      render();
+    }
+
+    function removePlayer(index) {
+      if (state.players.length === 1) {
+        alert("At least one player is required.");
+        return;
+      }
+      state.players.splice(index, 1);
+      if (state.activePlayerIndex >= state.players.length) state.activePlayerIndex = state.players.length - 1;
+      save();
+      render();
+    }
+
+    function selectPlayer(index) {
+      state.activePlayerIndex = index;
+      ensureMission(activePlayer());
+      save();
+      render();
+    }
+
+    function renderMap() {
+      const svg = $("svgMap");
+      svg.innerHTML = `
+        <defs>
+          <linearGradient id="coastFade" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="rgba(37,99,235,.06)" />
+            <stop offset="100%" stop-color="rgba(56,189,248,.02)" />
+          </linearGradient>
+        </defs>
+        <rect x="24" y="18" width="952" height="584" rx="28" fill="url(#coastFade)" opacity=".65"></rect>
+      `;
+      const profile = activePlayer();
+      activeStates().forEach(s => {
+        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        g.setAttribute("class", `state${profile.found.includes(s.code) ? " found" : ""}${profile.missionCode === s.code && !profile.found.includes(s.code) ? " mission" : ""}`);
+        g.setAttribute("data-code", s.code);
+
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("class", "shape");
+        path.setAttribute("d", stateRectPath(s));
+
+        const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        label.setAttribute("class", "stateLabel");
+        label.setAttribute("x", s.x + s.w/2);
+        label.setAttribute("y", s.y + s.h/2);
+        label.textContent = s.code;
+
+        g.appendChild(path);
+        g.appendChild(label);
+        g.addEventListener("click", () => toggleState(s.code));
+        svg.appendChild(g);
+      });
+    }
+
+    function renderTop() {
+      const profile = activePlayer();
+      const s = statsFor(profile);
+      const mission = missionState(profile);
+
+      $("scorePill").textContent = `Score: ${profile.score}`;
+      $("comboPill").textContent = `Combo: ${profile.combo}x`;
+      $("bestComboPill").textContent = `Best Combo: ${profile.bestCombo}x`;
+      $("streakPill").textContent = `States Found: ${s.foundCount}`;
+
+      $("missionName").textContent = mission ? mission.name : "All states found";
+      $("missionText").textContent = mission
+        ? `Spot ${mission.name} next for a mission bonus.`
+        : "You completed the whole game. Absolute road warrior.";
+
+      $("progressValue").textContent = `${s.progress}%`;
+      $("progressSub").textContent = `${s.foundCount} of ${s.total} found`;
+      $("foundValue").textContent = `${s.foundCount}`;
+      $("remainingValue").textContent = `${s.remaining}`;
+      $("tripPct").textContent = `${s.progress}%`;
+      $("tripBar").style.width = `${s.progress}%`;
+      $("mapHint").textContent = `Active player: ${profile.name} • Trip: ${state.tripName}`;
+
+      const unlocked = ACHIEVEMENTS.filter(a => a.test(s));
+      $("achievementValue").textContent = `${unlocked.length}`;
+      $("achievementSub").textContent = `${ACHIEVEMENTS.length} total badges`;
+
+      const note = $("recentAction");
+      if (profile.recentAction) {
+        note.style.display = "block";
+        note.textContent = profile.recentAction;
+      } else {
+        note.style.display = "none";
+      }
+
+      $("soundBtn").textContent = state.soundOn ? "🔊 Sound on" : "🔈 Sound off";
+      $("themeBtn").textContent = state.darkMode ? "☀️" : "🌙";
+      document.body.classList.toggle("dark", !!state.darkMode);
+    }
+
+    function renderAchievements() {
+      const box = $("achievements");
+      const unlocked = ACHIEVEMENTS.filter(a => a.test(statsFor(activePlayer())));
+      box.innerHTML = "";
+      ACHIEVEMENTS.forEach(a => {
+        const row = document.createElement("div");
+        row.className = `achievement${unlocked.some(u => u.id === a.id) ? " unlocked" : ""}`;
+        row.innerHTML = `
+          <div class="icon">${a.icon}</div>
+          <div>
+            <div style="font-weight:850">${a.label}</div>
+            <div class="muted" style="font-size:14px">${unlocked.some(u => u.id === a.id) ? "Unlocked" : "Locked"}</div>
+          </div>
+        `;
+        box.appendChild(row);
+      });
+    }
+
+    function renderRegions() {
+      const box = $("regions");
+      box.innerHTML = "";
+      regionStats(activePlayer()).forEach(r => {
+        const pct = Math.round((r.found / r.total) * 100);
+        const row = document.createElement("div");
+        row.className = "regionBlock";
+        row.innerHTML = `
+          <div class="row" style="font-size:14px">
+            <span style="font-weight:850">${r.region}</span>
+            <span class="muted">${r.found}/${r.total}</span>
+          </div>
+          <div class="bar"><span style="width:${pct}%"></span></div>
+        `;
+        box.appendChild(row);
+      });
+    }
+
+    function plateCardHTML(s) {
+      const profile = activePlayer();
+      const found = profile.found.includes(s.code);
+      const mission = profile.missionCode === s.code && !found;
+      return `
+        <button class="plate${found ? " found" : ""}${mission ? " mission" : ""}" data-code="${s.code}">
+          <div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+              <span style="font-size:18px;font-weight:850;letter-spacing:-.03em">${s.name}</span>
+              <span class="chip">${s.code}</span>
+            </div>
+            <div class="muted" style="margin-top:5px;font-size:14px">${s.region}</div>
+          </div>
+          <div style="font-size:20px">${mission ? "🎯 " : ""}${found ? "✅" : "○"}</div>
+        </button>
+      `;
+    }
+
+    function wirePlateButtons(scope) {
+      scope.querySelectorAll("[data-code]").forEach(btn => {
+        btn.addEventListener("click", () => toggleState(btn.getAttribute("data-code")));
+      });
+    }
+
+    function renderTracker() {
+      const box = $("trackerContent");
+      if (state.tab === "grid") {
+        const grid = document.createElement("div");
+        grid.className = "plateGrid";
+        grid.innerHTML = filteredStates().map(plateCardHTML).join("");
+        box.innerHTML = "";
+        box.appendChild(grid);
+        wirePlateButtons(grid);
+        return;
+      }
+
+      const wrap = document.createElement("div");
+      wrap.className = "stack";
+      groupedStates().forEach(g => {
+        const block = document.createElement("div");
+        block.className = "regionBlock";
+        block.innerHTML = `
+          <div class="row">
+            <div style="font-size:20px;font-weight:850">${g.region}</div>
+            <span class="chip">${g.items.filter(s => activePlayer().found.includes(s.code)).length}/${g.items.length}</span>
+          </div>
+          <div class="plateGrid">${g.items.map(plateCardHTML).join("")}</div>
+        `;
+        wrap.appendChild(block);
+      });
+      box.innerHTML = "";
+      box.appendChild(wrap);
+      wirePlateButtons(wrap);
+    }
+
+    function renderRecent() {
+      const box = $("recentFinds");
+      const recent = [...activePlayer().found]
+        .filter(code => activeStates().some(s => s.code === code))
+        .slice(-6)
+        .reverse()
+        .map(code => activeStates().find(s => s.code === code))
+        .filter(Boolean);
+
+      if (!recent.length) {
+        box.innerHTML = `
+          <div class="empty">
+            <div style="font-weight:850">No states found yet</div>
+            <div class="muted" style="margin-top:6px;font-size:14px">Tap the map or tracker cards to start your run.</div>
+          </div>
+        `;
+        return;
+      }
+
+      box.innerHTML = recent.map(s => `
+        <div class="recent">
+          <div>
+            <div style="font-weight:850">${s.name}</div>
+            <div class="muted" style="font-size:14px">${s.region}</div>
+          </div>
+          <div class="code">${s.code}</div>
+        </div>
+      `).join("");
+    }
+
+    function renderPlayers() {
+      const box = $("players");
+      box.innerHTML = "";
+      state.players.forEach((player, i) => {
+        const card = document.createElement("div");
+        card.className = `playerCard${i === state.activePlayerIndex ? " active" : ""}`;
+        const s = statsFor(player);
+        card.innerHTML = `
+          <div class="row">
+            <div>
+              <div style="font-weight:850">${player.name}</div>
+              <div class="muted" style="font-size:14px">${s.foundCount} found • ${player.score} points</div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button class="btn ghost tiny" data-select="${i}">Use</button>
+              <button class="btn ghost tiny" data-remove="${i}">✕</button>
+            </div>
+          </div>
+        `;
+        box.appendChild(card);
+      });
+
+      box.querySelectorAll("[data-select]").forEach(btn => btn.addEventListener("click", () => selectPlayer(Number(btn.getAttribute("data-select")))));
+      box.querySelectorAll("[data-remove]").forEach(btn => btn.addEventListener("click", () => removePlayer(Number(btn.getAttribute("data-remove")))));
+    }
+
+    function renderTabButtons() {
+      $("tabGrid").classList.toggle("active", state.tab === "grid");
+      $("tabRegions").classList.toggle("active", state.tab === "regions");
+    }
+
+    function bind() {
+      $("searchInput").addEventListener("input", e => {
+        state.query = e.target.value;
+        renderTracker();
+        save();
+      });
+
+      $("bonusToggle").addEventListener("change", e => {
+        state.includeBonus = e.target.checked;
+        state.players.forEach(player => {
+          if (!state.includeBonus) player.found = player.found.filter(code => code !== "DC");
+          ensureMission(player);
+        });
+        render();
+      });
+
+      $("tabGrid").addEventListener("click", () => { state.tab = "grid"; renderTracker(); renderTabButtons(); save(); });
+      $("tabRegions").addEventListener("click", () => { state.tab = "regions"; renderTracker(); renderTabButtons(); save(); });
+
+      $("newMissionBtn").addEventListener("click", newMission);
+      $("shuffleMissionBtn").addEventListener("click", newMission);
+      $("markAllBtn").addEventListener("click", markAll);
+      $("newGameBtn").addEventListener("click", newGame);
+      $("exportBtn").addEventListener("click", exportSave);
+      $("importBtn").addEventListener("click", importSave);
+
+      $("addPlayerBtn").addEventListener("click", addPlayer);
+      $("playerInput").addEventListener("keydown", e => {
+        if (e.key === "Enter") addPlayer();
+      });
+
+      $("resetPlayerBtn").addEventListener("click", () => {
+        if (!confirm(`Reset ${activePlayer().name}?`)) return;
+        newGame();
+      });
+
+      $("clearSearchBtn").addEventListener("click", () => {
+        state.query = "";
+        $("searchInput").value = "";
+        renderTracker();
+        save();
+      });
+
+      $("soundBtn").addEventListener("click", () => {
+        state.soundOn = !state.soundOn;
+        save();
+        renderTop();
+      });
+
+      $("themeBtn").addEventListener("click", () => {
+        state.darkMode = !state.darkMode;
+        save();
+        render();
+      });
+
+      document.querySelectorAll("[data-trip]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          state.tripName = btn.getAttribute("data-trip");
+          activePlayer().recentAction = `Trip set to ${state.tripName}.`;
+          save();
+          render();
+        });
+      });
+    }
+
+    function render() {
+      ensureMission(activePlayer());
+      renderTop();
+      renderMap();
+      renderAchievements();
+      renderRegions();
+      renderTracker();
+      renderRecent();
+      renderPlayers();
+      renderTabButtons();
+      $("bonusToggle").checked = state.includeBonus;
+      $("searchInput").value = state.query;
+      save();
+    }
+
+    load();
+    document.addEventListener("DOMContentLoaded", () => {
+      bind();
+      render();
+    });
+  </script>
+</body>
+</html>
