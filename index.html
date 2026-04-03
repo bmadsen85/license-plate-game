@@ -4,36 +4,41 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>License Plate Game</title>
-  <meta name="theme-color" content="#0b1220" />
+  <meta name="theme-color" content="#0f172a" />
   <style>
     :root{
-      --bg:#f5f7fb;
-      --bg2:#eef3f9;
+      --bg:#f6f9ff;
+      --bg2:#edf4ff;
       --panel:#ffffff;
+      --panel-soft:rgba(255,255,255,.88);
       --text:#0f172a;
-      --muted:#66758a;
-      --line:#e6ebf2;
-      --line-strong:#d7e0ea;
-      --soft:#f7f9fc;
+      --muted:#64748b;
+      --line:#dbe6f3;
+      --line-strong:#cad8ea;
+      --soft:#f8fbff;
       --accent:#0f172a;
-      --accent2:#2563eb;
-      --accent3:#0ea5e9;
+      --blue:#2563eb;
+      --cyan:#06b6d4;
+      --violet:#7c3aed;
+      --green:#16a34a;
       --warn:#d97706;
       --danger:#dc2626;
-      --success:#15803d;
-      --shadow:0 8px 24px rgba(15,23,42,.06);
-      --shadow-sm:0 2px 8px rgba(15,23,42,.05);
+      --shadow:0 10px 30px rgba(37,99,235,.08);
+      --shadow-sm:0 3px 10px rgba(15,23,42,.06);
       --max:1320px;
+      --radius-panel:10px;
+      --radius-card:6px;
+      --radius-input:5px;
     }
 
     *{box-sizing:border-box}
     html,body{margin:0;padding:0}
-
     body{
       font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       color:var(--text);
       background:
-        radial-gradient(circle at top, rgba(37,99,235,.05), transparent 24%),
+        radial-gradient(circle at top left, rgba(59,130,246,.10), transparent 28%),
+        radial-gradient(circle at top right, rgba(124,58,237,.08), transparent 24%),
         linear-gradient(180deg,var(--bg),var(--bg2));
       min-height:100vh;
       -webkit-font-smoothing:antialiased;
@@ -55,9 +60,10 @@
     .panel{
       background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.95));
       border:1px solid var(--line);
-      border-radius:8px;
+      border-radius:var(--radius-panel);
       box-shadow:var(--shadow);
       overflow:hidden;
+      position:relative;
     }
 
     .inner{padding:14px}
@@ -70,59 +76,69 @@
       gap:8px;
       padding:14px;
       border-bottom:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(248,250,252,.88), rgba(255,255,255,.92));
+      background:linear-gradient(180deg, rgba(248,250,252,.90), rgba(255,255,255,.96));
+    }
+
+    .heroPanel{
+      background:
+        radial-gradient(circle at 15% 20%, rgba(37,99,235,.16), transparent 22%),
+        radial-gradient(circle at 85% 15%, rgba(124,58,237,.12), transparent 18%),
+        linear-gradient(135deg, #ffffff 0%, #f7fbff 100%);
     }
 
     .title{
       margin:0;
-      font-size:30px;
+      font-size:32px;
       line-height:1;
-      letter-spacing:-.05em;
-      font-weight:800;
+      letter-spacing:-.055em;
+      font-weight:900;
     }
 
     .sub{
       color:var(--muted);
       font-size:13px;
-      line-height:1.45;
+      line-height:1.5;
       margin-top:8px;
       max-width:760px;
     }
 
-    .eyebrow,.pill,.btn,.leaderRank,.togglePill{border-radius:999px}
+    .eyebrow,.pill,.btn,.leaderRank,.togglePill{
+      border-radius:999px;
+    }
 
     .eyebrow{
       display:inline-flex;
       gap:8px;
       align-items:center;
-      padding:5px 9px;
-      border:1px solid var(--line);
-      background:#fff;
-      color:var(--muted);
+      padding:6px 10px;
+      border:1px solid #dbe7ff;
+      background:linear-gradient(180deg,#ffffff,#f8fbff);
+      color:#35518f;
       font-size:11px;
-      font-weight:700;
-      margin-bottom:8px;
+      font-weight:800;
+      margin-bottom:10px;
+      box-shadow:0 2px 8px rgba(37,99,235,.06);
     }
 
     .pillRow{
       display:flex;
       flex-wrap:wrap;
       gap:6px;
-      margin-top:10px;
+      margin-top:12px;
     }
 
     .pill{
-      padding:5px 8px;
+      padding:6px 9px;
       background:var(--soft);
       border:1px solid var(--line);
       font-size:10px;
-      font-weight:800;
+      font-weight:900;
       letter-spacing:.01em;
       color:#233044;
     }
 
     .pill.active{
-      background:var(--accent);
+      background:linear-gradient(180deg,#111827,#0f172a);
       color:#fff;
       border-color:transparent;
     }
@@ -171,7 +187,7 @@
     .field label{
       display:block;
       font-size:10px;
-      font-weight:800;
+      font-weight:900;
       color:var(--muted);
       text-transform:uppercase;
       letter-spacing:.08em;
@@ -182,7 +198,7 @@
       width:100%;
       padding:10px 11px;
       border:1px solid var(--line-strong);
-      border-radius:4px;
+      border-radius:var(--radius-input);
       background:#fff;
       outline:none;
       color:var(--text);
@@ -190,11 +206,11 @@
 
     .input:focus{
       border-color:#93c5fd;
-      box-shadow:0 0 0 3px rgba(37,99,235,.08);
+      box-shadow:0 0 0 3px rgba(37,99,235,.10);
     }
 
     .static-input{
-      font-weight:700;
+      font-weight:800;
       background:linear-gradient(180deg,#ffffff,#fafcff);
     }
 
@@ -205,7 +221,7 @@
       gap:8px;
       border:1px solid var(--line);
       background:linear-gradient(180deg, #fff, #fbfcfe);
-      border-radius:4px;
+      border-radius:var(--radius-card);
       padding:10px 11px;
       margin-top:6px;
     }
@@ -214,9 +230,9 @@
 
     .readyLabel{
       font-size:13px;
-      font-weight:800;
+      font-weight:900;
       color:var(--text);
-      letter-spacing:-.01em;
+      letter-spacing:-.02em;
     }
 
     .readySub{
@@ -231,24 +247,26 @@
       border:1px solid var(--line-strong);
       background:#e8edf5;
       color:#516174;
-      padding:9px 10px;
-      border-radius:4px;
-      font-weight:800;
+      padding:10px 10px;
+      border-radius:var(--radius-input);
+      font-weight:900;
       cursor:not-allowed;
     }
 
     .readyBtn.enabled{
-      background:linear-gradient(180deg, #111827, #0f172a);
+      background:linear-gradient(180deg, #2563eb, #1d4ed8);
       color:#fff;
-      border-color:#0f172a;
+      border-color:#1d4ed8;
       cursor:pointer;
+      box-shadow:0 8px 18px rgba(37,99,235,.20);
     }
 
     .readyBtn.ready{
       background:#eefcf1;
-      color:var(--success);
+      color:var(--green);
       border-color:#bbf7d0;
       cursor:default;
+      box-shadow:none;
     }
 
     .readyCard.ready{
@@ -278,11 +296,17 @@
 
     .togglePill input{margin:0}
 
-    .missionBox,.achievement,.rule,.leader,.saveBanner,.noticeCard{
+    .missionBox,.achievement,.rule,.leader,.saveBanner{
       border:1px solid var(--line);
-      border-radius:4px;
-      background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(249,251,253,.92));
+      border-radius:var(--radius-card);
+      background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(249,251,253,.94));
       padding:10px 11px;
+    }
+
+    .missionBox{
+      background:
+        radial-gradient(circle at top right, rgba(6,182,212,.10), transparent 25%),
+        linear-gradient(180deg, rgba(255,255,255,.98), rgba(246,250,255,.96));
     }
 
     .muted{
@@ -297,8 +321,10 @@
 
     .stat{
       padding:12px;
-      border-radius:6px;
-      background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(252,253,255,.96));
+      border-radius:8px;
+      background:linear-gradient(180deg, rgba(255,255,255,.99), rgba(250,252,255,.97));
+      border:1px solid var(--line);
+      box-shadow:var(--shadow-sm);
     }
 
     .top{
@@ -311,26 +337,26 @@
     .statLabel{
       font-size:11px;
       color:var(--muted);
-      font-weight:700;
+      font-weight:800;
     }
 
     .statValue{
-      font-size:22px;
-      font-weight:850;
-      letter-spacing:-.05em;
+      font-size:24px;
+      font-weight:900;
+      letter-spacing:-.055em;
       margin-top:4px;
       line-height:1;
     }
 
     .statIcon{
-      width:32px;
-      height:32px;
-      border-radius:4px;
-      background:linear-gradient(180deg, #f8fafc, #f1f5f9);
+      width:34px;
+      height:34px;
+      border-radius:5px;
+      background:linear-gradient(180deg, #f8fafc, #eef5ff);
       border:1px solid var(--line);
       display:grid;
       place-items:center;
-      font-size:14px;
+      font-size:15px;
     }
 
     .progressLine{
@@ -352,7 +378,7 @@
     .bar>span{
       display:block;
       height:100%;
-      background:linear-gradient(90deg,var(--accent2),var(--accent3));
+      background:linear-gradient(90deg,var(--blue),var(--cyan));
       width:0%;
       transition:width .3s ease;
     }
@@ -364,10 +390,10 @@
       overflow:hidden;
       min-height:auto;
       background:
-        radial-gradient(circle at 15% 20%, rgba(96,165,250,.13), transparent 14%),
-        radial-gradient(circle at 82% 18%, rgba(59,130,246,.11), transparent 14%),
+        radial-gradient(circle at 15% 20%, rgba(96,165,250,.14), transparent 14%),
+        radial-gradient(circle at 82% 18%, rgba(59,130,246,.12), transparent 14%),
         radial-gradient(circle at 50% 84%, rgba(37,99,235,.10), transparent 17%),
-        linear-gradient(180deg, rgba(255,255,255,.92), rgba(248,250,252,.92));
+        linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,252,.94));
     }
 
     .mapWrap{
@@ -412,7 +438,7 @@
     .stateLabel{
       fill:#0f172a;
       font-size:9px;
-      font-weight:800;
+      font-weight:900;
       pointer-events:none;
       text-anchor:middle;
       dominant-baseline:middle;
@@ -441,7 +467,7 @@
       padding:8px 9px;
       border:1px solid var(--line);
       border-radius:4px;
-      background:linear-gradient(180deg, rgba(255,255,255,.9), rgba(251,252,254,.88));
+      background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(251,252,254,.92));
       display:flex;
       justify-content:space-between;
       align-items:center;
@@ -458,7 +484,7 @@
     }
 
     .plate.found{
-      background:linear-gradient(180deg, rgba(239,246,255,.98), rgba(229,240,255,.92));
+      background:linear-gradient(180deg, rgba(239,246,255,.98), rgba(229,240,255,.94));
       border-color:#93c5fd;
     }
 
@@ -472,7 +498,7 @@
       align-items:center;
       gap:8px;
       border-radius:4px;
-      padding:9px 10px;
+      padding:10px 10px;
     }
 
     .leaderRank{
@@ -485,7 +511,7 @@
     }
 
     .leaderName{
-      font-weight:850;
+      font-weight:900;
       letter-spacing:-.01em;
     }
 
@@ -581,7 +607,7 @@
     }
 
     .lockedShell.locked .lockable{
-      opacity:.55;
+      opacity:.56;
       pointer-events:none;
       user-select:none;
       filter:saturate(.92);
@@ -594,7 +620,7 @@
       align-items:center;
       justify-content:center;
       padding:14px;
-      background:linear-gradient(180deg, rgba(248,250,252,.58), rgba(255,255,255,.74));
+      background:linear-gradient(180deg, rgba(248,250,252,.62), rgba(255,255,255,.78));
       backdrop-filter:blur(2px);
       z-index:5;
     }
@@ -607,10 +633,10 @@
       max-width:360px;
       width:100%;
       border:1px solid var(--line-strong);
-      background:#ffffff;
+      background:linear-gradient(180deg,#ffffff,#fbfdff);
       border-radius:6px;
       box-shadow:var(--shadow);
-      padding:12px;
+      padding:14px;
       text-align:center;
     }
 
@@ -624,7 +650,7 @@
     .lockText{
       margin-top:6px;
       font-size:12px;
-      line-height:1.4;
+      line-height:1.45;
       color:var(--muted);
     }
 
@@ -632,7 +658,7 @@
       display:inline-flex;
       align-items:center;
       gap:6px;
-      margin-top:8px;
+      margin-top:10px;
       padding:5px 8px;
       border:1px solid var(--line);
       border-radius:999px;
@@ -662,15 +688,15 @@
 
       .head,.inner{padding:16px}
       .head{flex-direction:row}
-      .title{font-size:44px}
+      .title{font-size:46px}
       .sub{font-size:15px}
       .eyebrow{font-size:12px}
       .pill{font-size:11px}
       .field label{font-size:11px}
       .togglePill{font-size:12px}
-      .missionBox,.achievement,.rule,.leader,.saveBanner,.noticeCard{padding:10px 11px}
+      .missionBox,.achievement,.rule,.leader,.saveBanner{padding:10px 11px}
       .muted{font-size:12px}
-      .statValue{font-size:28px}
+      .statValue{font-size:30px}
       .statLabel{font-size:12px}
       .statIcon{width:38px;height:38px;font-size:17px}
       .plateGrid{grid-template-columns:repeat(4,1fr)}
@@ -696,18 +722,17 @@
 
     @media (min-width:1121px){
       .wrap{padding:20px}
-      .title{font-size:46px}
     }
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="grid hero">
-      <section class="panel">
+      <section class="panel heroPanel">
         <div class="inner">
-          <div class="eyebrow">🚗 Shared leaderboard edition</div>
+          <div class="eyebrow">✨ Road trip challenge mode</div>
           <h1 class="title">License Plate Game</h1>
-          <div class="sub">Gamified road-trip tracker with score, combo streaks, mission targets, a clickable map, shared leaderboard, and optional DC + Canadian provinces.</div>
+          <div class="sub">Track every plate, race your friends on the leaderboard, stack combo points, and hunt mission targets as your trip fills in across the map.</div>
           <div class="pillRow">
             <div class="pill active" id="scorePill">Score: 0</div>
             <div class="pill" id="comboPill">Combo: 0x</div>
@@ -739,12 +764,12 @@
 
           <div class="toggleRow">
             <label class="togglePill"><input type="checkbox" id="includeDC" /> Include DC</label>
-            <label class="togglePill"><input type="checkbox" id="includeCanada" /> Include Canadian provinces</label>
+            <label class="togglePill"><input type="checkbox" id="includeCanada" /> Include Canada</label>
           </div>
 
           <div class="missionBox" style="margin-top:12px;">
             <div style="font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#6b7280;">Current mission</div>
-            <div id="missionName" style="font-size:22px;font-weight:850;letter-spacing:-.04em;margin-top:4px;">Loading...</div>
+            <div id="missionName" style="font-size:22px;font-weight:900;letter-spacing:-.04em;margin-top:4px;">Loading...</div>
             <div id="missionText" class="muted" style="margin-top:6px;">Find this plate next for a bonus.</div>
           </div>
 
@@ -768,17 +793,49 @@
     </div>
 
     <div class="grid stats">
-      <section class="panel stat"><div class="top"><div><div class="statLabel">Found</div><div class="statValue" id="statFound">0</div></div><div class="statIcon">✅</div></div></section>
-      <section class="panel stat"><div class="top"><div><div class="statLabel">Total</div><div class="statValue" id="statTotal">0</div></div><div class="statIcon">🧭</div></div></section>
-      <section class="panel stat"><div class="top"><div><div class="statLabel">Progress</div><div class="statValue" id="statPct">0%</div></div><div class="statIcon">📈</div></div></section>
-      <section class="panel stat"><div class="top"><div><div class="statLabel">Cloud</div><div class="statValue" id="cloudValue">Ready</div></div><div class="statIcon">☁️</div></div></section>
+      <section class="stat">
+        <div class="top">
+          <div>
+            <div class="statLabel">Found</div>
+            <div class="statValue" id="statFound">0</div>
+          </div>
+          <div class="statIcon">✅</div>
+        </div>
+      </section>
+      <section class="stat">
+        <div class="top">
+          <div>
+            <div class="statLabel">Total</div>
+            <div class="statValue" id="statTotal">0</div>
+          </div>
+          <div class="statIcon">🧭</div>
+        </div>
+      </section>
+      <section class="stat">
+        <div class="top">
+          <div>
+            <div class="statLabel">Progress</div>
+            <div class="statValue" id="statPct">0%</div>
+          </div>
+          <div class="statIcon">📈</div>
+        </div>
+      </section>
+      <section class="stat">
+        <div class="top">
+          <div>
+            <div class="statLabel">Cloud</div>
+            <div class="statValue" id="cloudValue">Ready</div>
+          </div>
+          <div class="statIcon">☁️</div>
+        </div>
+      </section>
     </div>
 
     <div class="grid content">
       <section class="panel" id="leaderboardPanel">
         <div class="head">
           <div>
-            <div style="font-size:23px;font-weight:850;letter-spacing:-.04em;">Leaderboard</div>
+            <div style="font-size:23px;font-weight:900;letter-spacing:-.04em;">Leaderboard</div>
             <div class="muted" style="margin-top:4px;">Shared trip: <strong>Summer 2026</strong></div>
           </div>
         </div>
@@ -787,7 +844,7 @@
 
       <section class="panel" id="gamificationPanel">
         <div class="head">
-          <div style="font-size:23px;font-weight:850;letter-spacing:-.04em;">Gamification</div>
+          <div style="font-size:23px;font-weight:900;letter-spacing:-.04em;">Gamification</div>
         </div>
         <div class="inner stack">
           <div class="achievement"><strong>Score:</strong>&nbsp;<span id="scoreText">0</span></div>
@@ -803,7 +860,7 @@
         <div class="lockable">
           <div class="head">
             <div>
-              <div style="font-size:23px;font-weight:850;letter-spacing:-.04em;">Tracker</div>
+              <div style="font-size:23px;font-weight:900;letter-spacing:-.04em;">Tracker</div>
               <div class="muted" style="margin-top:4px;">Search and tap plates below if you do not want to use the map.</div>
             </div>
             <div class="searchWrap">
@@ -828,13 +885,13 @@
         <div class="lockable">
           <div class="head">
             <div>
-              <div style="font-size:23px;font-weight:850;letter-spacing:-.04em;">Clickable map</div>
+              <div style="font-size:23px;font-weight:900;letter-spacing:-.04em;">Clickable map</div>
               <div class="muted" style="margin-top:4px;">Tap any state or province shape to mark it found. Mission plates glow.</div>
             </div>
             <div style="min-width:min(100%,280px);width:320px">
               <div class="progressLine">
-                <span class="muted" style="font-weight:800">Trip completion</span>
-                <span id="tripPctText" style="font-weight:850">0%</span>
+                <span class="muted" style="font-weight:900">Trip completion</span>
+                <span id="tripPctText" style="font-weight:900">0%</span>
               </div>
               <div class="bar"><span id="tripBar"></span></div>
             </div>
@@ -858,7 +915,6 @@
 
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
-
     const SUPABASE_URL = "https://fibgchsrxdwbuddnduov.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZpYmdjaHNyeGR3YnVkZG5kdW92Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MzYzNTUsImV4cCI6MjA5MDMxMjM1NX0.ecgEHdJ7zq21_phOv1OnxNY0-y8nUiXRstybNibYmPA";
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -1105,7 +1161,7 @@
         return `
           <button class="plate${found ? " found" : ""}${mission ? " mission" : ""}" data-code="${p.code}">
             <div>
-              <div style="font-size:15px;font-weight:850;letter-spacing:-.03em;">${p.code}</div>
+              <div style="font-size:15px;font-weight:900;letter-spacing:-.03em;">${p.code}</div>
               <div class="muted">${p.name}</div>
             </div>
             <div style="font-size:16px">${found ? "✅" : mission ? "🎯" : "○"}</div>
@@ -1326,7 +1382,7 @@
       }
 
       state.playerName = data.player_name || "";
-      state.hasStarted = !!state.player_name || !!data.player_name;
+      state.hasStarted = !!data.player_name;
       state.found = Array.isArray(data.found_states) ? data.found_states : [];
       state.includeDC = !!data.include_dc;
       state.includeCanada = !!data.include_canada;
