@@ -4,76 +4,88 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>License Plate Game</title>
-  <meta name="theme-color" content="#0f172a" />
+  <meta name="theme-color" content="#0b1220" />
   <style>
     :root{
-      --bg1:#f8fafc;
-      --bg2:#eaf1f8;
-      --panel:rgba(255,255,255,.9);
+      --bg:#f5f7fb;
+      --bg2:#eef3f9;
+      --panel:#ffffff;
       --text:#0f172a;
-      --muted:#64748b;
-      --line:#dbe5f0;
-      --soft:#f5f8fc;
+      --muted:#66758a;
+      --line:#e6ebf2;
+      --line-strong:#d7e0ea;
+      --soft:#f7f9fc;
       --accent:#0f172a;
       --accent2:#2563eb;
-      --warn:#f59e0b;
+      --accent3:#0ea5e9;
+      --warn:#d97706;
       --danger:#dc2626;
-      --shadow:0 16px 34px rgba(15,23,42,.08);
-      --shadow-sm:0 6px 14px rgba(15,23,42,.06);
+      --success:#15803d;
+      --shadow:0 8px 24px rgba(15,23,42,.06);
+      --shadow-sm:0 2px 8px rgba(15,23,42,.05);
+      --max:1320px;
     }
 
     *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
 
     body{
-      margin:0;
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       color:var(--text);
       background:
-        radial-gradient(circle at top, rgba(37,99,235,.08), transparent 28%),
-        linear-gradient(180deg,var(--bg1),var(--bg2));
+        radial-gradient(circle at top, rgba(37,99,235,.05), transparent 24%),
+        linear-gradient(180deg,var(--bg),var(--bg2));
       min-height:100vh;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
     }
 
     button,input{font:inherit}
+    button{appearance:none}
 
-    .wrap{max-width:1320px;margin:0 auto;padding:20px}
-    .grid{display:grid;gap:14px}
-    .hero{grid-template-columns:1.1fr .9fr}
-    .stats{grid-template-columns:repeat(4,1fr)}
-    .main{grid-template-columns:1.14fr .86fr}
-    .bottom{grid-template-columns:1.2fr .8fr;margin-top:14px}
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:10px;
+    }
+
+    .grid{display:grid;gap:10px}
+    .hero,.stats,.content{grid-template-columns:1fr}
 
     .panel{
-      background:var(--panel);
-      backdrop-filter:blur(10px);
+      background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.95));
       border:1px solid var(--line);
-      border-radius:18px;
+      border-radius:8px;
       box-shadow:var(--shadow);
       overflow:hidden;
     }
 
-    .inner{padding:18px}
+    .inner{padding:14px}
 
     .head{
       display:flex;
+      flex-direction:column;
       justify-content:space-between;
       align-items:flex-start;
-      gap:12px;
-      padding:18px;
+      gap:8px;
+      padding:14px;
       border-bottom:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(248,250,252,.88), rgba(255,255,255,.92));
     }
 
     .title{
       margin:0;
-      font-size:48px;
-      line-height:1.02;
-      letter-spacing:-.045em;
+      font-size:30px;
+      line-height:1;
+      letter-spacing:-.05em;
+      font-weight:800;
     }
 
     .sub{
       color:var(--muted);
-      font-size:17px;
-      margin-top:12px;
+      font-size:13px;
+      line-height:1.45;
+      margin-top:8px;
       max-width:760px;
     }
 
@@ -83,27 +95,30 @@
       display:inline-flex;
       gap:8px;
       align-items:center;
-      padding:7px 11px;
+      padding:5px 9px;
       border:1px solid var(--line);
       background:#fff;
       color:var(--muted);
-      font-size:13px;
-      margin-bottom:12px;
+      font-size:11px;
+      font-weight:700;
+      margin-bottom:8px;
     }
 
     .pillRow{
       display:flex;
       flex-wrap:wrap;
-      gap:8px;
-      margin-top:16px;
+      gap:6px;
+      margin-top:10px;
     }
 
     .pill{
-      padding:8px 11px;
+      padding:5px 8px;
       background:var(--soft);
       border:1px solid var(--line);
-      font-size:12px;
-      font-weight:700;
+      font-size:10px;
+      font-weight:800;
+      letter-spacing:.01em;
+      color:#233044;
     }
 
     .pill.active{
@@ -113,27 +128,29 @@
     }
 
     .btn{
-      padding:10px 14px;
-      border:1px solid var(--line);
+      padding:9px 12px;
+      border:1px solid var(--line-strong);
       background:#fff;
       color:var(--text);
       cursor:pointer;
-      font-weight:700;
+      font-weight:800;
       display:inline-flex;
       gap:8px;
       align-items:center;
-      transition:transform .12s ease,box-shadow .12s ease;
+      transition:transform .12s ease,box-shadow .12s ease,border-color .12s ease,opacity .12s ease;
+      box-shadow:0 1px 0 rgba(15,23,42,.02);
     }
 
     .btn:hover{
       transform:translateY(-1px);
-      box-shadow:0 8px 20px rgba(15,23,42,.08);
+      box-shadow:0 8px 16px rgba(15,23,42,.06);
+      border-color:#cfd8e3;
     }
 
     .btn.warn{
-      background:#fff7ed;
+      background:#fffbeb;
       color:#9a3412;
-      border-color:#fed7aa;
+      border-color:#fde68a;
     }
 
     .btn.danger{
@@ -142,28 +159,147 @@
       border-color:#fecaca;
     }
 
-    .field{margin-bottom:12px}
+    .btn:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+      transform:none;
+      box-shadow:none;
+    }
+
+    .field{margin-bottom:8px}
 
     .field label{
       display:block;
-      font-size:11px;
+      font-size:10px;
       font-weight:800;
       color:var(--muted);
       text-transform:uppercase;
       letter-spacing:.08em;
-      margin-bottom:6px;
+      margin-bottom:4px;
     }
 
     .input,.static-input{
       width:100%;
-      padding:11px 12px;
-      border:1px solid var(--line);
-      border-radius:10px;
+      padding:10px 11px;
+      border:1px solid var(--line-strong);
+      border-radius:4px;
       background:#fff;
       outline:none;
+      color:var(--text);
     }
 
-    .static-input{font-weight:700}
+    .input:focus{
+      border-color:#93c5fd;
+      box-shadow:0 0 0 3px rgba(37,99,235,.08);
+    }
+
+    .static-input{
+      font-weight:700;
+      background:linear-gradient(180deg,#ffffff,#fafcff);
+    }
+
+    .readyCard{
+      display:flex;
+      flex-direction:column;
+      align-items:stretch;
+      gap:8px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, #fff, #fbfcfe);
+      border-radius:4px;
+      padding:10px 11px;
+      margin-top:6px;
+    }
+
+    .readyTextWrap{min-width:0}
+
+    .readyLabel{
+      font-size:13px;
+      font-weight:800;
+      color:var(--text);
+      letter-spacing:-.01em;
+    }
+
+    .readySub{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:2px;
+      line-height:1.35;
+    }
+
+    .readyBtn{
+      width:100%;
+      border:1px solid var(--line-strong);
+      background:#e8edf5;
+      color:#516174;
+      padding:9px 10px;
+      border-radius:4px;
+      font-weight:800;
+      cursor:not-allowed;
+    }
+
+    .readyBtn.enabled{
+      background:linear-gradient(180deg, #111827, #0f172a);
+      color:#fff;
+      border-color:#0f172a;
+      cursor:pointer;
+    }
+
+    .readyBtn.ready{
+      background:#eefcf1;
+      color:var(--success);
+      border-color:#bbf7d0;
+      cursor:default;
+    }
+
+    .readyCard.ready{
+      border-color:#bbf7d0;
+      background:linear-gradient(180deg, #f7fef8, #f0fdf4);
+    }
+
+    .toggleRow{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      margin-top:6px;
+    }
+
+    .togglePill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 9px;
+      background:#fff;
+      border:1px solid var(--line-strong);
+      font-size:11px;
+      font-weight:800;
+      cursor:pointer;
+      color:#243346;
+    }
+
+    .togglePill input{margin:0}
+
+    .missionBox,.achievement,.rule,.leader,.saveBanner,.noticeCard{
+      border:1px solid var(--line);
+      border-radius:4px;
+      background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(249,251,253,.92));
+      padding:10px 11px;
+    }
+
+    .muted{
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.4;
+    }
+
+    .stats{
+      grid-template-columns:repeat(2,1fr);
+    }
+
+    .stat{
+      padding:12px;
+      border-radius:6px;
+      background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(252,253,255,.96));
+    }
 
     .top{
       display:flex;
@@ -172,78 +308,42 @@
       align-items:flex-start;
     }
 
-    .stat{
-      padding:16px;
-      border-radius:14px;
-    }
-
     .statLabel{
-      font-size:13px;
+      font-size:11px;
       color:var(--muted);
+      font-weight:700;
     }
 
     .statValue{
-      font-size:30px;
+      font-size:22px;
       font-weight:850;
-      letter-spacing:-.04em;
+      letter-spacing:-.05em;
       margin-top:4px;
+      line-height:1;
     }
 
     .statIcon{
-      width:40px;
-      height:40px;
-      border-radius:10px;
-      background:var(--soft);
+      width:32px;
+      height:32px;
+      border-radius:4px;
+      background:linear-gradient(180deg, #f8fafc, #f1f5f9);
       border:1px solid var(--line);
       display:grid;
       place-items:center;
-      font-size:18px;
+      font-size:14px;
     }
-
-    .missionBox,.achievement,.rule,.leader,.saveBanner{
-      border:1px solid var(--line);
-      border-radius:12px;
-      background:rgba(255,255,255,.6);
-      padding:12px 13px;
-    }
-
-    .muted{
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    .toggleRow{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin-top:8px;
-    }
-
-    .togglePill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:9px 11px;
-      background:#fff;
-      border:1px solid var(--line);
-      font-size:13px;
-      font-weight:700;
-      cursor:pointer;
-    }
-
-    .togglePill input{margin:0}
 
     .progressLine{
       display:flex;
       justify-content:space-between;
       align-items:center;
-      font-size:13px;
-      margin-bottom:8px;
+      font-size:11px;
+      margin-bottom:5px;
     }
 
     .bar{
-      height:10px;
-      background:rgba(148,163,184,.2);
+      height:8px;
+      background:rgba(148,163,184,.14);
       border-radius:999px;
       overflow:hidden;
       border:1px solid var(--line);
@@ -252,7 +352,7 @@
     .bar>span{
       display:block;
       height:100%;
-      background:linear-gradient(90deg,var(--accent2),#38bdf8);
+      background:linear-gradient(90deg,var(--accent2),var(--accent3));
       width:0%;
       transition:width .3s ease;
     }
@@ -260,27 +360,27 @@
     .mapCard{
       position:relative;
       border:1px solid var(--line);
-      border-radius:14px;
+      border-radius:6px;
       overflow:hidden;
-      min-height:540px;
+      min-height:auto;
       background:
-        radial-gradient(circle at 15% 20%, rgba(96,165,250,.16), transparent 14%),
-        radial-gradient(circle at 82% 18%, rgba(59,130,246,.14), transparent 14%),
-        radial-gradient(circle at 50% 84%, rgba(37,99,235,.12), transparent 17%),
-        linear-gradient(135deg, rgba(255,255,255,.72), rgba(248,250,252,.58));
+        radial-gradient(circle at 15% 20%, rgba(96,165,250,.13), transparent 14%),
+        radial-gradient(circle at 82% 18%, rgba(59,130,246,.11), transparent 14%),
+        radial-gradient(circle at 50% 84%, rgba(37,99,235,.10), transparent 17%),
+        linear-gradient(180deg, rgba(255,255,255,.92), rgba(248,250,252,.92));
     }
 
     .mapWrap{
-      padding:12px;
+      padding:8px;
       overflow:auto;
     }
 
     .svgMap{
       width:100%;
-      min-width:950px;
+      min-width:620px;
       height:auto;
       display:block;
-      filter:drop-shadow(0 10px 20px rgba(15,23,42,.08));
+      filter:drop-shadow(0 8px 16px rgba(15,23,42,.05));
     }
 
     .state{
@@ -294,19 +394,19 @@
 
     .state .shape{
       fill:#ffffff;
-      stroke:#b9c7d8;
+      stroke:#bcc9d8;
       stroke-width:1.6;
     }
 
     .state.found .shape{
-      fill:#bfdbfe;
+      fill:#dbeafe;
       stroke:#2563eb;
     }
 
     .state.mission .shape{
       stroke:var(--warn);
       stroke-width:3;
-      filter:drop-shadow(0 0 8px rgba(245,158,11,.28));
+      filter:drop-shadow(0 0 7px rgba(245,158,11,.22));
     }
 
     .stateLabel{
@@ -320,134 +420,145 @@
 
     .plateGrid{
       display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:8px;
+      grid-template-columns:repeat(2,1fr);
+      gap:6px;
     }
 
     .sectionLabel{
       grid-column:1/-1;
-      font-size:12px;
-      font-weight:800;
-      letter-spacing:.08em;
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:.1em;
       text-transform:uppercase;
-      color:#64748b;
-      margin:2px 0 2px;
+      color:#6b7b90;
+      margin:2px 0;
       padding-top:2px;
     }
 
-    .sectionLabel.spaced{
-      margin-top:8px;
-    }
+    .sectionLabel.spaced{margin-top:8px}
 
     .plate{
-      padding:10px 11px;
+      padding:8px 9px;
       border:1px solid var(--line);
-      border-radius:10px;
-      background:rgba(255,255,255,.65);
+      border-radius:4px;
+      background:linear-gradient(180deg, rgba(255,255,255,.9), rgba(251,252,254,.88));
       display:flex;
       justify-content:space-between;
       align-items:center;
-      gap:8px;
+      gap:6px;
       cursor:pointer;
-      transition:transform .12s ease,box-shadow .12s ease;
-      min-height:66px;
+      transition:transform .12s ease,box-shadow .12s ease,border-color .12s ease, background .12s ease;
+      min-height:62px;
     }
 
     .plate:hover{
       transform:translateY(-1px);
       box-shadow:var(--shadow-sm);
+      border-color:#d1dbe7;
     }
 
     .plate.found{
-      background:rgba(37,99,235,.08);
+      background:linear-gradient(180deg, rgba(239,246,255,.98), rgba(229,240,255,.92));
       border-color:#93c5fd;
     }
 
     .plate.mission:not(.found){
-      box-shadow:0 0 0 2px rgba(245,158,11,.18);
+      box-shadow:0 0 0 2px rgba(245,158,11,.14);
     }
 
     .leader{
       display:flex;
       justify-content:space-between;
       align-items:center;
-      gap:10px;
-      border-radius:10px;
-      padding:10px 11px;
+      gap:8px;
+      border-radius:4px;
+      padding:9px 10px;
     }
 
     .leaderRank{
-      padding:6px 9px;
+      padding:4px 7px;
       background:var(--soft);
-      font-size:11px;
-      font-weight:800;
+      font-size:10px;
+      font-weight:900;
       border:1px solid var(--line);
+      color:#233044;
     }
 
-    .leaderName{font-weight:850}
-    .stack{display:grid;gap:10px}
+    .leaderName{
+      font-weight:850;
+      letter-spacing:-.01em;
+    }
+
+    .stack{display:grid;gap:8px}
 
     .empty{
       color:var(--muted);
       padding:10px 0;
+      grid-column:1/-1;
     }
 
-    .searchWrap{position:relative}
+    .searchWrap{
+      position:relative;
+      width:100%;
+    }
 
     .searchIcon{
       position:absolute;
-      left:12px;
+      left:10px;
       top:50%;
       transform:translateY(-50%);
       color:var(--muted);
+      font-size:13px;
     }
 
     .search{
-      padding:11px 12px 11px 34px;
-      border:1px solid var(--line);
-      border-radius:10px;
+      min-width:100%;
+      padding:9px 10px 9px 32px;
+      border:1px solid var(--line-strong);
+      border-radius:4px;
       background:#fff;
       outline:none;
       width:100%;
-      min-width:min(100%,300px);
+      font-size:14px;
     }
 
     .saveBanner{
       border:1px solid #bfdbfe;
-      background:linear-gradient(135deg, #eff6ff, #dbeafe);
-      border-radius:12px;
-      padding:11px 12px;
-      box-shadow:0 6px 14px rgba(37,99,235,.08);
+      background:linear-gradient(180deg, #eff6ff, #dbeafe);
+      border-radius:6px;
+      padding:10px 11px;
+      box-shadow:0 4px 10px rgba(37,99,235,.05);
     }
 
     .saveBannerTop{
       display:flex;
       align-items:center;
       gap:8px;
-      font-size:14px;
-      font-weight:800;
+      font-size:12px;
+      font-weight:900;
       color:#1d4ed8;
+      letter-spacing:.01em;
     }
 
     .saveDot{
-      width:10px;
-      height:10px;
+      width:9px;
+      height:9px;
       border-radius:999px;
       background:#22c55e;
-      box-shadow:0 0 0 4px rgba(34,197,94,.16);
+      box-shadow:0 0 0 3px rgba(34,197,94,.12);
       flex:0 0 auto;
     }
 
     .saveBannerText{
       margin-top:6px;
-      font-size:13px;
+      font-size:12px;
       color:#1e3a8a;
       line-height:1.35;
     }
 
     .saveBanner.saved{
       border-color:#86efac;
-      background:linear-gradient(135deg, #f0fdf4, #dcfce7);
+      background:linear-gradient(180deg, #f0fdf4, #dcfce7);
     }
 
     .saveBanner.saved .saveBannerTop,
@@ -457,7 +568,7 @@
 
     .saveBanner.error{
       border-color:#fecaca;
-      background:linear-gradient(135deg, #fef2f2, #fee2e2);
+      background:linear-gradient(180deg, #fef2f2, #fee2e2);
     }
 
     .saveBanner.error .saveBannerTop,
@@ -465,55 +576,127 @@
       color:#991b1b;
     }
 
-    @media (max-width:1120px){
-      .hero,.stats,.main,.bottom{grid-template-columns:1fr}
-      .plateGrid{grid-template-columns:repeat(2,1fr)}
-      .title{font-size:40px}
-      .svgMap{min-width:760px}
+    .lockedShell{
+      position:relative;
     }
 
-    @media (max-width:720px){
-      .wrap{padding:8px}
-      .grid{gap:8px}
-      .hero,.stats,.main,.bottom{gap:8px}
-      .panel{border-radius:14px}
-      .head,.inner{padding:12px}
-      .title{font-size:28px;line-height:1.02}
-      .sub{font-size:13px;margin-top:8px}
-      .eyebrow{font-size:11px;padding:5px 9px;margin-bottom:8px}
-      .pillRow{gap:6px;margin-top:10px}
-      .pill{padding:5px 8px;font-size:10px}
-      .field{margin-bottom:8px}
-      .field label{font-size:10px;margin-bottom:4px}
-      .input,.static-input{padding:9px 10px;border-radius:9px;font-size:14px}
-      .toggleRow{gap:6px;margin-top:6px}
-      .togglePill{padding:7px 9px;font-size:11px}
-      .missionBox,.achievement,.rule,.leader,.saveBanner{padding:9px 10px;border-radius:10px}
-      .muted{font-size:11px}
-      .stats{grid-template-columns:repeat(2,1fr)}
-      .stat{padding:12px}
-      .statValue{font-size:22px}
-      .statLabel{font-size:11px}
-      .statIcon{width:32px;height:32px;font-size:14px;border-radius:8px}
-      .head{flex-direction:column;gap:8px}
-      .progressLine{font-size:11px;margin-bottom:5px}
-      .bar{height:8px}
-      .search{min-width:100%;padding:9px 10px 9px 32px;border-radius:9px;font-size:14px}
-      .searchIcon{left:10px;font-size:13px}
-      .plateGrid{grid-template-columns:repeat(2,1fr);gap:6px}
-      .plate{padding:8px 9px;border-radius:9px;gap:6px;min-height:62px}
-      .leader{gap:8px}
-      .leaderRank{padding:4px 7px;font-size:10px}
-      .mapCard{min-height:auto;border-radius:12px}
-      .mapWrap{padding:8px}
-      .svgMap{min-width:620px}
-      .saveBannerTop{font-size:13px}
-      .saveBannerText{font-size:12px}
-      .sectionLabel{font-size:11px}
-      #leaderboardPanel{order:1}
-      #trackerPanel{order:2}
-      #mapPanel{order:3}
-      #gamificationPanel{order:4}
+    .lockedShell.locked .lockable{
+      opacity:.55;
+      pointer-events:none;
+      user-select:none;
+      filter:saturate(.92);
+    }
+
+    .lockOverlay{
+      position:absolute;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:14px;
+      background:linear-gradient(180deg, rgba(248,250,252,.58), rgba(255,255,255,.74));
+      backdrop-filter:blur(2px);
+      z-index:5;
+    }
+
+    .lockedShell.locked .lockOverlay{
+      display:flex;
+    }
+
+    .lockCard{
+      max-width:360px;
+      width:100%;
+      border:1px solid var(--line-strong);
+      background:#ffffff;
+      border-radius:6px;
+      box-shadow:var(--shadow);
+      padding:12px;
+      text-align:center;
+    }
+
+    .lockTitle{
+      font-size:14px;
+      font-weight:900;
+      letter-spacing:-.02em;
+      color:var(--text);
+    }
+
+    .lockText{
+      margin-top:6px;
+      font-size:12px;
+      line-height:1.4;
+      color:var(--muted);
+    }
+
+    .lockMini{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      margin-top:8px;
+      padding:5px 8px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
+      color:#344256;
+      background:var(--soft);
+    }
+
+    @media (min-width:721px){
+      .wrap{padding:16px}
+      .grid{gap:12px}
+      .hero{grid-template-columns:1.08fr .92fr}
+      .stats{grid-template-columns:repeat(4,1fr)}
+      .content{
+        grid-template-columns:minmax(0,1.14fr) minmax(0,.86fr);
+        grid-template-areas:
+          "tracker leaderboard"
+          "map gamification";
+        align-items:start;
+      }
+
+      #trackerPanel{grid-area:tracker}
+      #leaderboardPanel{grid-area:leaderboard}
+      #mapPanel{grid-area:map}
+      #gamificationPanel{grid-area:gamification}
+
+      .head,.inner{padding:16px}
+      .head{flex-direction:row}
+      .title{font-size:44px}
+      .sub{font-size:15px}
+      .eyebrow{font-size:12px}
+      .pill{font-size:11px}
+      .field label{font-size:11px}
+      .togglePill{font-size:12px}
+      .missionBox,.achievement,.rule,.leader,.saveBanner,.noticeCard{padding:10px 11px}
+      .muted{font-size:12px}
+      .statValue{font-size:28px}
+      .statLabel{font-size:12px}
+      .statIcon{width:38px;height:38px;font-size:17px}
+      .plateGrid{grid-template-columns:repeat(4,1fr)}
+      .plate{padding:10px 11px;min-height:64px}
+      .leader{padding:10px 11px}
+      .leaderRank{font-size:11px;padding:5px 8px}
+      .mapCard{min-height:540px}
+      .mapWrap{padding:12px}
+      .svgMap{min-width:950px}
+      .searchWrap{width:auto;min-width:300px}
+      .search{min-width:min(100%,300px)}
+      .readyCard{
+        flex-direction:row;
+        justify-content:space-between;
+        align-items:center;
+        gap:12px;
+      }
+      .readyBtn{
+        width:auto;
+        white-space:nowrap;
+      }
+    }
+
+    @media (min-width:1121px){
+      .wrap{padding:20px}
+      .title{font-size:46px}
     }
   </style>
 </head>
@@ -546,13 +729,21 @@
             <input id="playerName" class="input" placeholder="Enter your name" />
           </div>
 
+          <div class="readyCard" id="readyCard">
+            <div class="readyTextWrap">
+              <div class="readyLabel" id="readyLabel">Enter your name to begin</div>
+              <div class="readySub" id="readySub">Your progress will auto-save once you start.</div>
+            </div>
+            <button class="readyBtn" id="readyBtn" type="button" disabled>Start Playing</button>
+          </div>
+
           <div class="toggleRow">
             <label class="togglePill"><input type="checkbox" id="includeDC" /> Include DC</label>
             <label class="togglePill"><input type="checkbox" id="includeCanada" /> Include Canadian provinces</label>
           </div>
 
           <div class="missionBox" style="margin-top:12px;">
-            <div style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#6b7280;">Current mission</div>
+            <div style="font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#6b7280;">Current mission</div>
             <div id="missionName" style="font-size:22px;font-weight:850;letter-spacing:-.04em;margin-top:4px;">Loading...</div>
             <div id="missionText" class="muted" style="margin-top:6px;">Find this plate next for a bonus.</div>
           </div>
@@ -583,59 +774,20 @@
       <section class="panel stat"><div class="top"><div><div class="statLabel">Cloud</div><div class="statValue" id="cloudValue">Ready</div></div><div class="statIcon">☁️</div></div></section>
     </div>
 
-    <div class="grid main">
-      <section class="panel" id="trackerPanel">
-        <div class="head">
-          <div>
-            <div style="font-size:26px;font-weight:850;letter-spacing:-.04em;">Tracker</div>
-            <div class="muted" style="margin-top:4px;">Search and tap plates below if you do not want to use the map.</div>
-          </div>
-          <div class="searchWrap">
-            <span class="searchIcon">🔎</span>
-            <input id="searchInput" class="search" placeholder="Search state or province..." />
-          </div>
-        </div>
-        <div class="inner">
-          <div class="plateGrid" id="trackerGrid"></div>
-        </div>
-      </section>
-
+    <div class="grid content">
       <section class="panel" id="leaderboardPanel">
         <div class="head">
           <div>
-            <div style="font-size:26px;font-weight:850;letter-spacing:-.04em;">Leaderboard</div>
+            <div style="font-size:23px;font-weight:850;letter-spacing:-.04em;">Leaderboard</div>
             <div class="muted" style="margin-top:4px;">Shared trip: <strong>Summer 2026</strong></div>
           </div>
         </div>
         <div class="inner stack" id="leaderboard"></div>
       </section>
-    </div>
-
-    <div class="grid bottom">
-      <section class="panel" id="mapPanel">
-        <div class="head">
-          <div>
-            <div style="font-size:26px;font-weight:850;letter-spacing:-.04em;">Clickable map</div>
-            <div class="muted" style="margin-top:4px;">Tap any state or province shape to mark it found. Mission plates glow.</div>
-          </div>
-          <div style="min-width:min(100%,280px);width:320px">
-            <div class="progressLine">
-              <span class="muted" style="font-weight:800">Trip completion</span>
-              <span id="tripPctText" style="font-weight:850">0%</span>
-            </div>
-            <div class="bar"><span id="tripBar"></span></div>
-          </div>
-        </div>
-        <div class="mapCard">
-          <div class="mapWrap">
-            <svg id="svgMap" class="svgMap" viewBox="0 0 1120 720" xmlns="http://www.w3.org/2000/svg"></svg>
-          </div>
-        </div>
-      </section>
 
       <section class="panel" id="gamificationPanel">
         <div class="head">
-          <div style="font-size:26px;font-weight:850;letter-spacing:-.04em;">Gamification</div>
+          <div style="font-size:23px;font-weight:850;letter-spacing:-.04em;">Gamification</div>
         </div>
         <div class="inner stack">
           <div class="achievement"><strong>Score:</strong>&nbsp;<span id="scoreText">0</span></div>
@@ -644,6 +796,61 @@
           <div class="rule">Every new plate is worth 100 points.</div>
           <div class="rule">Each combo level adds +15 points.</div>
           <div class="rule">Mission plates add a +125 bonus.</div>
+        </div>
+      </section>
+
+      <section class="panel lockedShell" id="trackerPanel">
+        <div class="lockable">
+          <div class="head">
+            <div>
+              <div style="font-size:23px;font-weight:850;letter-spacing:-.04em;">Tracker</div>
+              <div class="muted" style="margin-top:4px;">Search and tap plates below if you do not want to use the map.</div>
+            </div>
+            <div class="searchWrap">
+              <span class="searchIcon">🔎</span>
+              <input id="searchInput" class="search" placeholder="Search state or province..." />
+            </div>
+          </div>
+          <div class="inner">
+            <div class="plateGrid" id="trackerGrid"></div>
+          </div>
+        </div>
+        <div class="lockOverlay">
+          <div class="lockCard">
+            <div class="lockTitle">Confirm your player to start</div>
+            <div class="lockText">Enter your name and tap <strong>Start Playing</strong> to unlock the tracker.</div>
+            <div class="lockMini">🔒 Gameplay locked until ready</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel lockedShell" id="mapPanel">
+        <div class="lockable">
+          <div class="head">
+            <div>
+              <div style="font-size:23px;font-weight:850;letter-spacing:-.04em;">Clickable map</div>
+              <div class="muted" style="margin-top:4px;">Tap any state or province shape to mark it found. Mission plates glow.</div>
+            </div>
+            <div style="min-width:min(100%,280px);width:320px">
+              <div class="progressLine">
+                <span class="muted" style="font-weight:800">Trip completion</span>
+                <span id="tripPctText" style="font-weight:850">0%</span>
+              </div>
+              <div class="bar"><span id="tripBar"></span></div>
+            </div>
+          </div>
+          <div class="mapCard">
+            <div class="mapWrap">
+              <svg id="svgMap" class="svgMap" viewBox="0 0 1120 720" xmlns="http://www.w3.org/2000/svg"></svg>
+            </div>
+          </div>
+        </div>
+        <div class="lockOverlay">
+          <div class="lockCard">
+            <div class="lockTitle">Map unlocks after player confirmation</div>
+            <div class="lockText">Choose your player name first, then tap <strong>Start Playing</strong>.</div>
+            <div class="lockMini">🗺️ Locked until ready</div>
+          </div>
         </div>
       </section>
     </div>
@@ -742,6 +949,7 @@
       playerId: getPlayerId(),
       tripSlug: "Summer 2026",
       playerName: "",
+      hasStarted: false,
       found: [],
       includeDC: false,
       includeCanada: false,
@@ -774,6 +982,7 @@
       const saved = localStorage.getItem("plate-game-gamified");
       if (saved) Object.assign(state, JSON.parse(saved));
       if (!state.playerId) state.playerId = getPlayerId();
+      if (typeof state.hasStarted !== "boolean") state.hasStarted = false;
     }
 
     function sanitizeFound() {
@@ -922,7 +1131,7 @@
       }
 
       if (!html) {
-        html = `<div class="empty" style="grid-column:1/-1;">No matching results.</div>`;
+        html = `<div class="empty">No matching results.</div>`;
       }
 
       const tracker = document.getElementById("trackerGrid");
@@ -933,7 +1142,23 @@
       });
     }
 
+    function setGameplayLockedUi() {
+      const locked = !state.hasStarted;
+      document.getElementById("trackerPanel").classList.toggle("locked", locked);
+      document.getElementById("mapPanel").classList.toggle("locked", locked);
+      document.getElementById("searchInput").disabled = locked;
+      document.getElementById("includeDC").disabled = locked;
+      document.getElementById("includeCanada").disabled = locked;
+      document.getElementById("newMissionBtn").disabled = locked;
+      document.getElementById("resetBtn").disabled = locked;
+    }
+
     function togglePlate(code) {
+      if (!state.hasStarted) {
+        setSaveBanner("default", "Enter your name and tap Start Playing to unlock gameplay.");
+        return;
+      }
+
       if (state.found.includes(code)) {
         state.found = state.found.filter(c => c !== code);
         state.combo = 0;
@@ -980,6 +1205,54 @@
       text.textContent = message;
     }
 
+    function updateReadyState() {
+      const name = document.getElementById("playerName").value.trim();
+      const card = document.getElementById("readyCard");
+      const btn = document.getElementById("readyBtn");
+      const label = document.getElementById("readyLabel");
+      const sub = document.getElementById("readySub");
+
+      card.classList.remove("ready");
+      btn.classList.remove("enabled", "ready");
+
+      if (!name) {
+        btn.disabled = true;
+        label.textContent = "Enter your name to begin";
+        sub.textContent = "Your progress will auto-save once you start.";
+        btn.textContent = "Start Playing";
+        return;
+      }
+
+      if (state.hasStarted && state.playerName === name) {
+        card.classList.add("ready");
+        btn.classList.add("ready");
+        btn.disabled = false;
+        btn.textContent = "Ready ✓";
+        label.textContent = `You’re playing as ${name}`;
+        sub.textContent = "Progress is auto-saving for this player on this device.";
+        return;
+      }
+
+      btn.disabled = false;
+      btn.classList.add("enabled");
+      label.textContent = `Ready to play as ${name}`;
+      sub.textContent = "Tap Start Playing to confirm your player name.";
+      btn.textContent = "Start Playing";
+    }
+
+    function confirmReadyState() {
+      const name = document.getElementById("playerName").value.trim();
+      if (!name) return;
+
+      state.playerName = name;
+      state.hasStarted = true;
+      saveLocal();
+      updateReadyState();
+      setGameplayLockedUi();
+      setSaveBanner("default", `You’re ready to play as ${name}. Progress will save automatically.`);
+      autoSave();
+    }
+
     function handleSupabaseError(error) {
       const msg = error?.message || "Save failed.";
       if (msg.toLowerCase().includes("leaderboard is full") || msg.toLowerCase().includes("max 10 players")) {
@@ -994,7 +1267,7 @@
       state.playerName = document.getElementById("playerName").value.trim();
       state.tripSlug = document.getElementById("tripSlug").textContent.trim();
 
-      if (!state.playerName) return;
+      if (!state.playerName || !state.hasStarted) return;
 
       sanitizeFound();
 
@@ -1053,6 +1326,7 @@
       }
 
       state.playerName = data.player_name || "";
+      state.hasStarted = !!state.player_name || !!data.player_name;
       state.found = Array.isArray(data.found_states) ? data.found_states : [];
       state.includeDC = !!data.include_dc;
       state.includeCanada = !!data.include_canada;
@@ -1070,6 +1344,8 @@
       saveLocal();
       renderMap();
       renderTracker();
+      updateReadyState();
+      setGameplayLockedUi();
       setSaveBanner("saved", `Loaded saved progress for ${state.playerName}.`);
     }
 
@@ -1080,57 +1356,57 @@
       try {
         const { data, error } = await supabase
           .from("leaderboard_entries")
-          .select("*")
+          .select("player_id, player_name, found_count, score, include_dc, include_canada")
           .eq("trip_slug", trip)
           .order("score", { ascending: false })
-          .order("found_count", { ascending: false });
+          .order("found_count", { ascending: false })
+          .order("player_name", { ascending: true });
 
         if (error) {
-          const newHtml = '<div class="empty">Could not load leaderboard.</div>';
-          if (lastLeaderboardSignature !== newHtml) {
-            el.innerHTML = newHtml;
-            lastLeaderboardSignature = newHtml;
+          const errorSignature = "error";
+          if (lastLeaderboardSignature !== errorSignature) {
+            el.innerHTML = '<div class="empty">Could not load leaderboard.</div>';
+            lastLeaderboardSignature = errorSignature;
           }
           return;
         }
 
         if (!data || data.length === 0) {
-          const newHtml = '<div class="empty">No scores yet.</div>';
-          if (lastLeaderboardSignature !== newHtml) {
-            el.innerHTML = newHtml;
-            lastLeaderboardSignature = newHtml;
+          const emptySignature = "empty";
+          if (lastLeaderboardSignature !== emptySignature) {
+            el.innerHTML = '<div class="empty">No scores yet.</div>';
+            lastLeaderboardSignature = emptySignature;
           }
           return;
         }
 
-        const signature = JSON.stringify(
-          data.map(row => ({
-            player_id: row.player_id,
-            player_name: row.player_name,
-            found_count: row.found_count,
-            score: row.score,
-            include_dc: row.include_dc,
-            include_canada: row.include_canada
-          }))
-        );
+        const normalizedRows = data.map((row, i) => ({
+          rank: i + 1,
+          player_id: row.player_id,
+          player_name: row.player_name || "",
+          found_count: Number(row.found_count || 0),
+          score: Number(row.score || 0),
+          include_dc: !!row.include_dc,
+          include_canada: !!row.include_canada,
+          is_you: row.player_id === state.playerId
+        }));
 
+        const signature = JSON.stringify(normalizedRows);
         if (signature === lastLeaderboardSignature) return;
 
-        const newHtml = data.map((row, i) => {
+        const newHtml = normalizedRows.map(row => {
           const extras = [
             row.include_dc ? "DC" : null,
             row.include_canada ? "Canada" : null
           ].filter(Boolean).join(" • ");
 
-          const isYou = row.player_id === state.playerId;
-
           return `
             <div class="leader">
               <div>
-                <div class="leaderName" style="font-size:15px;">${row.player_name}${isYou ? " (You)" : ""}</div>
+                <div class="leaderName" style="font-size:15px;">${row.player_name}${row.is_you ? " (You)" : ""}</div>
                 <div class="muted">${row.found_count} found • ${row.score} pts${extras ? " • " + extras : ""}</div>
               </div>
-              <div class="leaderRank">#${i + 1}</div>
+              <div class="leaderRank">#${row.rank}</div>
             </div>
           `;
         }).join("");
@@ -1138,10 +1414,10 @@
         el.innerHTML = newHtml;
         lastLeaderboardSignature = signature;
       } catch {
-        const newHtml = '<div class="empty">Could not load leaderboard.</div>';
-        if (lastLeaderboardSignature !== newHtml) {
-          el.innerHTML = newHtml;
-          lastLeaderboardSignature = newHtml;
+        const errorSignature = "error";
+        if (lastLeaderboardSignature !== errorSignature) {
+          el.innerHTML = '<div class="empty">Could not load leaderboard.</div>';
+          lastLeaderboardSignature = errorSignature;
         }
       }
     }
@@ -1161,12 +1437,20 @@
       autoSave();
     }
 
-    document.getElementById("playerName").addEventListener("change", e => {
-      state.playerName = e.target.value.trim();
+    document.getElementById("playerName").addEventListener("input", e => {
+      const nextName = e.target.value.trim();
+
+      if (state.hasStarted && nextName !== state.playerName) {
+        state.hasStarted = false;
+      }
+
+      state.playerName = nextName;
       saveLocal();
-      setSaveBanner("default", `Auto-save is on. Changes for ${state.playerName || "this player"} will save automatically.`);
-      autoSave();
+      updateReadyState();
+      setGameplayLockedUi();
     });
+
+    document.getElementById("readyBtn").addEventListener("click", confirmReadyState);
 
     document.getElementById("includeDC").addEventListener("change", e => {
       state.includeDC = e.target.checked;
@@ -1221,8 +1505,12 @@
     renderMap();
     renderTracker();
     loadLeaderboard();
-    setSaveBanner("default", "Progress saves automatically for this player on this device.");
-    setInterval(loadLeaderboard, 5000);
+    updateReadyState();
+    setGameplayLockedUi();
+    setSaveBanner("default", state.hasStarted
+      ? `You’re ready to play as ${state.playerName}. Progress saves automatically.`
+      : "Enter your name and tap Start Playing to unlock gameplay.");
+    setInterval(loadLeaderboard, 8000);
   </script>
 </body>
 </html>
